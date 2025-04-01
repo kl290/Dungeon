@@ -1,0 +1,5 @@
+/.idea
+/venv
+/Dungeon.iml
+/.coverage
+tests/.coverage
