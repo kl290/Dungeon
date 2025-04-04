@@ -1,5 +1,9 @@
+import os
+import sys
 import unittest
 from unittest.mock import patch, call
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Dungeon.generate_dungeon import generate_dungeon
 from Dungeon.print_dungeon import print_dungeon
@@ -34,9 +38,3 @@ class TestPrintDungeon(unittest.TestCase):
             call('P', end = '  '),
 
             call()]
-        # Wenn Spieler auf Postion soll print 'P'
-
-
-# Tests ausführen
-if __name__ == '__main__':
-    unittest.main()

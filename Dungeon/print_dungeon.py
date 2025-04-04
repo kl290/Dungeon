@@ -1,7 +1,7 @@
 def print_dungeon(dungeon, spieler_position):
     for y in range(0, len(dungeon)):
         for x in range(0, len(dungeon[y])):
-            if spieler_position == (y, x):
+            if spieler_position["x"] == x and spieler_position["y"] == y:
                 print('P', end = '  ')
             else:
                 if [y, x] == [0, 0]:

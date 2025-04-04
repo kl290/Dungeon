@@ -14,13 +14,13 @@ def generate_dungeon(y, x):
             if raumtyp == 'S':
                 dungeon[i][j] = {
                     'raumtyp': raumtyp,
-                    'gold': 10,
+                    'gold': random.randint(10, 50),
                     'besucht': False
                 }
             elif raumtyp == 'F':
                 dungeon[i][j] = {
                     'raumtyp': raumtyp,
-                    'schaden': 10,
+                    'schaden': random.randint(10, 50),
                     'besucht': False
                 }
             else:  # 'L' für leeren Raum
