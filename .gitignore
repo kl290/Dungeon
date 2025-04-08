@@ -3,3 +3,4 @@
 /Dungeon.iml
 /.coverage
 tests/.coverage
+/tests/htmlcov/

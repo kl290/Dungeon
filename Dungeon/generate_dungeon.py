@@ -20,10 +20,10 @@ def generate_dungeon(y, x):
             elif raumtyp == 'F':
                 dungeon[i][j] = {
                     'raumtyp': raumtyp,
-                    'schaden': random.randint(10, 50),
+                    'schaden': random.randint(20, 50),
                     'besucht': False
                 }
-            else:  # 'L' für leeren Raum
+            else:
                 dungeon[i][j] = {
                     'raumtyp': raumtyp,
                     'besucht': False
