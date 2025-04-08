@@ -15,19 +15,18 @@ class TestBewegungImDungeon(unittest.TestCase):
         }
 
     def test_erfolg(self):
-        # Jeder Fall besteht aus Startkoordinaten, Eingabe und Zielkoordinaten
+
         testfaelle = [
             [(1, 1), "N", (1, 0)],
             [(0, 1), "O", (1, 1)],
             [(0, 0), "S", (0, 1)],
             [(1, 0), "W", (0, 0)],
-
         ]
-        for testfall in testfaelle:
-            self.spieler_position = {"x": testfall[0][0], "y": testfall[0][1]}
-            result = bewegung_im_dungeon(self.dungeon, self.spieler_position, testfall[1])
-            self.assertEqual('Erfolg', result, f'Fehler bei Index {testfall}')
-            self.assertEqual({'x': testfall[2][0], 'y': testfall[2][1]}, self.spieler_position, f'Fehler bei Index {testfall}')
+        for start, eingabe, ziel in testfaelle:
+            spieler = {"position": [start[0], start[1]]}
+            result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
+            self.assertEqual('Erfolg', result, f'Fehler bei Testfall {start}, {eingabe}')
+            self.assertEqual([ziel[0], ziel[1]], spieler['position'], f'Position nicht korrekt bei {start}, {eingabe}')
 
     def test_fehler(self):
         testfaelle = [
@@ -36,33 +35,33 @@ class TestBewegungImDungeon(unittest.TestCase):
             [(0, 1), 'S', (0, 1)],
             [(0, 0), 'W', (0, 0)],
         ]
-        for testfall in testfaelle:
-            self.spieler_position = {'x': testfall[0][0], 'y': testfall[0][1]}
-            result = bewegung_im_dungeon(self.dungeon, self.spieler_position, testfall[1])
-            self.assertEqual('Fehler', result, f'Fehler bei Index {testfall}')
-            self.assertEqual({'x': testfall[2][0], 'y': testfall[2][1]}, self.spieler_position, f'Fehler bei Index {testfall}')
+        for start, eingabe, ziel in testfaelle:
+            spieler = {'position': [start[0], start[1]]}
+            result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
+            self.assertEqual('Fehler', result, f'Fehler erwartet bei {start}, {eingabe}')
+            self.assertEqual([ziel[0], ziel[1]], spieler['position'], 'Position darf sich nicht ändern bei Fehler')
 
     def test_position_ausserhalb_dungeon(self):
         testfaelle = [
-            (-1, 0),  # x außerhalb
-            (0, -1),  # y außerhalb
-            (-1, -1),  # x und y außerhalb
+            [-1, 0],
+            [0, -1],
+            [-1, -1],
         ]
-        for pos in testfaelle:
-            self.spieler_position = {'x': pos[0], 'y': pos[1]}
-            result = bewegung_im_dungeon(self.dungeon, self.spieler_position, 'N')  # Bewegung kann beliebig sein
+        for position in testfaelle:
+            spieler = {'position': [position[0], position[1]]}
+            result = bewegung_im_dungeon(self.dungeon, spieler, 'N')  # Bewegung beliebig
             self.assertEqual('Erfolg', result)
-            self.assertEqual({'x': 0, 'y': 0}, self.spieler_position)
+            self.assertEqual([0, 0], spieler['position'])
 
     def test_verlassen_des_dungeons(self):
-        self.spieler_position = {'x': 0, 'y': 0}
-        result = bewegung_im_dungeon(self.dungeon, self.spieler_position, 'Q')
+        spieler = {'position': [0, 0]}
+        result = bewegung_im_dungeon(self.dungeon, spieler, 'Q')
         self.assertEqual('Ende', result)
 
     def test_ungueltige_eingabe(self):
-        testfaelle = ["Z", "1", "","!", None, {}]
+        testfaelle = ["Z", "1", "", "!", None, {}]
         for eingabe in testfaelle:
-            self.spieler_position = {"x": 0, "y": 0}
-            result = bewegung_im_dungeon(self.dungeon, self.spieler_position, eingabe)
+            spieler = {"position": [0, 0]}
+            result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
             self.assertEqual("Fehler", result, f"Fehler bei Eingabe: {eingabe}")
-
+            self.assertEqual([0, 0], spieler['position'], 'Position darf sich bei ungültiger Eingabe nicht ändern')
