@@ -1,3 +1,35 @@
-== Dungeon
+== 🏰 Dungeon-Abenteuer (Textbasiertes Spiel)
+Ein kleines, textbasiertes Dungeon-Adventure-Spiel in Python. +
+Der Spieler erkundet ein zufällig generiertes Dungeon, sammelt Gold und versucht, Fallen zu überleben.
 
-Neue Wochenaufgabe mit einem abgeschlossenen Projekt.
+**🔧 Features ** +
+
+* Zufällige Dungeon-Generierung mit *variabler Größe*
+
+* Verschiedene Raumtypen:
+
+ - S = Schatz (Gold finden)
+
+ - F = Falle (Schaden erleiden)
+
+ - L = Leerer Raum
+
+* Spielerbewegung (N, S, O, W)
+
+* Besuchte Räume werden aufgedeckt
+
+* Spielstand mit Leben, Gold und aktueller Position
+
+**📁 Projektstruktur ** +
+
+* dungeon.py: Hauptdatei mit Spiel-Loop 
+
+* generate_dungeon.py: Erstellt das Dungeon 
+
+* print_dungeon.py: Zeigt die aktuelle Karte an
+
+* bewegung_im_dungeon.py: Verarbeitet Spielerbewegungen & Regeln
+
+
+**🧙‍♂️Ziel ** +
+Erkunde das Dungeon, überlebe die Fallen und sammle so viel Gold wie möglich!
