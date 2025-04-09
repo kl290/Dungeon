@@ -22,7 +22,7 @@ dungeon = generate_dungeon(5, 5)
 while True:
     print()
     print('Dungeon Karte:')
-    print_dungeon(dungeon, spieler)
+    print_dungeon(dungeon, spieler['position'])
     print('Leben:', spieler['leben'], 'Gold:', spieler['gold'])
 
     eingabe = input('Wohin möchten Sie gehen? (Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): ')

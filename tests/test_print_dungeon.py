@@ -44,7 +44,7 @@ class TestPrintDungeon(unittest.TestCase):
         ]
 
         for test in tests:
-            print_dungeon(test[0], {"x": 0, "y": 0})
+            print_dungeon(test[0], [0, 0])
 
             self.assertEqual(mock_print.mock_calls, test[1])
 
@@ -58,7 +58,7 @@ class TestPrintDungeon(unittest.TestCase):
                     [{'raumtyp': '', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
                     [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}]
                 ],
-                {"x": 0, "y": 0},
+                [0, 0],
                 [
                     call('P', end = '  '), call('S', end = '  '),
                     call(),
@@ -71,7 +71,7 @@ class TestPrintDungeon(unittest.TestCase):
                     [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
                     [{'raumtyp': '', 'besucht': False}, {'raumtyp': 'L', 'besucht': True}]
                 ],
-                {"x": 1, "y": 1},
+                [1, 1],
                 [
                     call('E', end = '  '), call('S', end = '  '),
                     call(),
@@ -85,5 +85,5 @@ class TestPrintDungeon(unittest.TestCase):
             print_dungeon(test[0], test[1])
 
             self.assertEqual(mock_print.mock_calls, test[2])
-            
+
             mock_print.reset_mock()
