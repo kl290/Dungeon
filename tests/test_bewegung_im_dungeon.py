@@ -15,7 +15,6 @@ class TestBewegungImDungeon(unittest.TestCase):
         }
 
     def test_erfolg(self):
-
         testfaelle = [
             [(1, 1), "N", (1, 0)],
             [(0, 1), "O", (1, 1)],
@@ -25,8 +24,8 @@ class TestBewegungImDungeon(unittest.TestCase):
         for start, eingabe, ziel in testfaelle:
             spieler = {"position": [start[0], start[1]]}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
-            self.assertEqual('Erfolg', result, f'Fehler bei Testfall {start}, {eingabe}')
-            self.assertEqual([ziel[0], ziel[1]], spieler['position'], f'Position nicht korrekt bei {start}, {eingabe}')
+            self.assertEqual('Erfolg', result, ('Fehler bei Testfall', start, eingabe))
+            self.assertEqual([ziel[0], ziel[1]], spieler['position'], 'Position nicht korrekt')
 
     def test_fehler(self):
         testfaelle = [
@@ -38,7 +37,7 @@ class TestBewegungImDungeon(unittest.TestCase):
         for start, eingabe, ziel in testfaelle:
             spieler = {'position': [start[0], start[1]]}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
-            self.assertEqual('Fehler', result, f'Fehler erwartet bei {start}, {eingabe}')
+            self.assertEqual('Fehler', result, ('Fehler erwartet bei', start, eingabe))
             self.assertEqual([ziel[0], ziel[1]], spieler['position'], 'Position darf sich nicht ändern bei Fehler')
 
     def test_position_ausserhalb_dungeon(self):
@@ -59,9 +58,23 @@ class TestBewegungImDungeon(unittest.TestCase):
         self.assertEqual('Ende', result)
 
     def test_ungueltige_eingabe(self):
-        testfaelle = ["Z", "1", "", "!", None, {}]
+        testfaelle = ['Z', '1', '', '!', None, {}]
         for eingabe in testfaelle:
-            spieler = {"position": [0, 0]}
+            spieler = {'position': [0, 0]}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
-            self.assertEqual("Fehler", result, f"Fehler bei Eingabe: {eingabe}")
+            self.assertEqual('Fehler', result, ('Fehler bei Eingabe:', eingabe))
             self.assertEqual([0, 0], spieler['position'], 'Position darf sich bei ungültiger Eingabe nicht ändern')
+
+    def test_gross_und_kleinbuchtsaben(self):
+        testfaelle = [
+            [(1, 1), "N", (1, 0)],
+            [(1, 1), "n", (1, 0)],
+            [(0, 1), "o", (1, 1)],
+            [(0, 1), "O", (1, 1)],
+
+        ]
+        for start, eingabe, ziel in testfaelle:
+            spieler = {"position": [start[0], start[1]]}
+            result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
+            self.assertEqual('Erfolg', result, ('Fehler bei Testfall', start, eingabe))
+            self.assertEqual([ziel[0], ziel[1]], spieler['position'], 'Position nicht korrekt')
