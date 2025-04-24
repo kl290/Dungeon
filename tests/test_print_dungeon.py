@@ -18,19 +18,24 @@ class TestPrintDungeon(unittest.TestCase):
                     [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
                      {'raumtyp': 'F', 'besucht': True}],
                     [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True},
-                     {'raumtyp': 'S', 'besucht': True}]
+                     {'raumtyp': 'S', 'besucht': True}],
+                    [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'L', 'besucht': True},
+                     {'raumtyp': 'L', 'besucht': True}],
                 ],
                 [
                     call('P', end = '  '), call('F', end = '  '), call('F', end = '  '),
                     call(),
                     call('F', end = '  '), call('S', end = '  '), call('S', end = '  '),
+                    call(),
+                    call('?', end = '  '), call('L', end = '  '), call('L', end = '  '),
                     call()
                 ]
             ],
             [
                 [
                     [{'raumtyp': 'F', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}]
+                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True}],
                 ],
                 [
                     call('P', end = '  '),
@@ -38,6 +43,9 @@ class TestPrintDungeon(unittest.TestCase):
                     call(),
                     call('L', end = '  '),
                     call('?', end = '  '),
+                    call(),
+                    call('?', end = '  '),
+                    call('F', end = '  '),
                     call()
                 ]
             ]
@@ -56,26 +64,60 @@ class TestPrintDungeon(unittest.TestCase):
             [
                 [
                     [{'raumtyp': '', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}]
+                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
+                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': True}],
                 ],
                 [0, 0],
                 [
                     call('P', end = '  '), call('S', end = '  '),
                     call(),
                     call('L', end = '  '), call('?', end = '  '),
+                    call(),
+                    call('L', end = '  '), call('F', end = '  '),
                     call()
                 ]
             ],
             [
                 [
                     [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': '', 'besucht': False}, {'raumtyp': 'L', 'besucht': True}]
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'L', 'besucht': True}],
+                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False}],
                 ],
                 [1, 1],
                 [
                     call('E', end = '  '), call('S', end = '  '),
                     call(),
                     call('?', end = '  '), call('P', end = '  '),
+                    call(),
+                    call('S', end = '  '), call('?', end = '  '),
+                    call()
+                ]
+            ],
+            # Test mit größerem Dungeon (4x4), um x/y-Verwechslung zu erkennen
+            [
+                [
+                    [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
+                     {'raumtyp': 'S', 'besucht': False},
+                     {'raumtyp': 'F', 'besucht': False}],
+                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False},
+                     {'raumtyp': 'S', 'besucht': True},
+                     {'raumtyp': 'F', 'besucht': False}],
+                    [{'raumtyp': 'F', 'besucht': False}, {'raumtyp': 'F', 'besucht': False},
+                     {'raumtyp': 'L', 'besucht': True},
+                     {'raumtyp': 'S', 'besucht': True}],
+                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': True},
+                     {'raumtyp': 'F', 'besucht': False},
+                     {'raumtyp': 'S', 'besucht': False}]
+                ],
+                [2, 3],  # P erscheint bei [3][2], also bei y=3, x=2
+                [
+                    call('E', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
+                    call(),
+                    call('S', end = '  '), call('?', end = '  '), call('S', end = '  '), call('?', end = '  '),
+                    call(),
+                    call('?', end = '  '), call('?', end = '  '), call('L', end = '  '), call('S', end = '  '),
+                    call(),
+                    call('S', end = '  '), call('L', end = '  '), call('P', end = '  '), call('?', end = '  '),
                     call()
                 ]
             ]
