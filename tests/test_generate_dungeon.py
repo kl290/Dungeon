@@ -23,10 +23,20 @@ class TestGenerateDungeon(unittest.TestCase):
                 raumtyp = room['raumtyp']
                 self.assertIn(raumtyp, ['F', 'S', 'L'])
 
-    def test_zufaelligkeit_der_dungeon_generierung(self):
-        for _ in range(0, 10):
-            dungeon1 = generate_dungeon(5, 5)
-            dungeon2 = generate_dungeon(5, 5)
-            if dungeon1 != dungeon2:
-                return
-        self.fail('Keine Unterschiede generiert')
+    @patch('builtins.print')
+    @patch('random.choice', side_effect=['S', 'S', 'S'])
+    @patch('random.randint', side_effect=[5, 60, 30])
+    def test_randint_ausserhalb_gold_range(self, mock_randint, mock_choice, mock_print):
+        generate_dungeon(1, 3, gold_range=(10, 50))
+
+        mock_print.assert_any_call('Goldwert außerhalb der Range!')
+        self.assertEqual(mock_print.call_count, 2)
+
+    @patch('builtins.print')
+    @patch('random.choice', side_effect=['F', 'F', 'F'])
+    @patch('random.randint', side_effect=[8, 50, 35])
+    def test_randint_ausserhalb_damage_range(self, mock_randint, mock_choice, mock_print):
+        generate_dungeon(1, 3, damage_range = (10, 40))
+
+        mock_print.assert_any_call('Schadenswert außerhalb der Range!')
+        self.assertEqual(mock_print.call_count, 2)
