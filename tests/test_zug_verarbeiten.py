@@ -16,12 +16,18 @@ class TestZugVerarbeiten(unittest.TestCase):
     @patch('builtins.print')
     def test_besuchter_raum(self, mock_print):
         dungeon = [
-            [{'raumtyp': 'S', 'gold': 20, 'besucht': True}, {'raumtyp': 'S', 'gold': 30, 'besucht': False}],
+            [{'raumtyp': 'S', 'gold': 10, 'besucht': True}, {'raumtyp': 'S', 'gold': 30, 'besucht': False}],
             [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'schaden': 10, 'besucht': False}]
         ]
+        gold_vorher = self.spieler['gold']
+        leben_vorher = self.spieler['leben']
+
         self.spieler['position'] = (0, 0)
         zug_verarbeiten(dungeon, self.spieler)
         mock_print.assert_called_with('In diesem Raum warst du bereits.')
+
+        self.assertEqual(self.spieler['gold'], gold_vorher)
+        self.assertEqual(self.spieler['leben'], leben_vorher)
 
     @patch('builtins.print')
     def test_schatzraum(self,mock_print):
