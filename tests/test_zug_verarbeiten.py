@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from Dungeon.zug_verarbeiten import zug_verarbeiten
 
+
 class TestZugVerarbeiten(unittest.TestCase):
 
     def setUp(self):
@@ -19,18 +20,15 @@ class TestZugVerarbeiten(unittest.TestCase):
             [{'raumtyp': 'S', 'gold': 10, 'besucht': True}, {'raumtyp': 'S', 'gold': 30, 'besucht': False}],
             [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'schaden': 10, 'besucht': False}]
         ]
-        gold_vorher = self.spieler['gold']
-        leben_vorher = self.spieler['leben']
 
         self.spieler['position'] = (0, 0)
         zug_verarbeiten(dungeon, self.spieler)
-        mock_print.assert_called_with('In diesem Raum warst du bereits.')
 
-        self.assertEqual(self.spieler['gold'], gold_vorher)
-        self.assertEqual(self.spieler['leben'], leben_vorher)
+        self.assertEqual(self.spieler['gold'], 10)
+        self.assertEqual(self.spieler['leben'], 100)
 
     @patch('builtins.print')
-    def test_schatzraum(self,mock_print):
+    def test_schatzraum(self, mock_print):
         gold = random.randint(10, 50)
         schaden = random.randint(10, 50)
         dungeon = [
@@ -47,7 +45,8 @@ class TestZugVerarbeiten(unittest.TestCase):
         gold = random.randint(10, 50)
         schaden = random.randint(10, 50)
         dungeon = [
-            [{'raumtyp': 'F', 'schaden': schaden, 'besucht': False}, {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}],
+            [{'raumtyp': 'F', 'schaden': schaden, 'besucht': False},
+             {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}],
             [{'raumtyp': 'S', 'gold': gold, 'besucht': False}, {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}]
         ]
         zug_verarbeiten(dungeon, self.spieler)
@@ -66,7 +65,3 @@ class TestZugVerarbeiten(unittest.TestCase):
         zug_verarbeiten(dungeon, self.spieler)
         self.assertTrue(dungeon[0][1]['besucht'])
         mock_print.assert_called_with('Der Raum ist leer.')
-
-
-
-

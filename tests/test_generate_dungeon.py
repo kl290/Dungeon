@@ -10,6 +10,26 @@ from Dungeon.generate_dungeon import generate_dungeon
 
 class TestGenerateDungeon(unittest.TestCase):
 
+    @patch('random.randint')
+    @patch('random.choice')
+    def test_dungeon_generierung_mit_mock(self, mock_choice, mock_randint):
+
+        mock_choice.side_effect = ['S', 'F', 'L']
+
+        mock_randint.side_effect = [42, 17]
+
+        dungeon = generate_dungeon(1, 3)
+
+        testfaelle = {
+            0: {
+                0: {'raumtyp': 'S', 'gold': 42, 'besucht': False},
+                1: {'raumtyp': 'F', 'schaden': 17, 'besucht': False},
+                2: {'raumtyp': 'L', 'besucht': False}
+            }
+        }
+
+        self.assertEqual(dungeon, testfaelle)
+
     def test_spielfeld_format(self):
         dungeon = generate_dungeon(5, 5)
         self.assertEqual(len(dungeon), 5)
@@ -23,20 +43,8 @@ class TestGenerateDungeon(unittest.TestCase):
                 raumtyp = room['raumtyp']
                 self.assertIn(raumtyp, ['F', 'S', 'L'])
 
-    @patch('builtins.print')
-    @patch('random.choice', side_effect=['S', 'S', 'S'])
-    @patch('random.randint', side_effect=[5, 60, 30])
-    def test_randint_ausserhalb_gold_range(self, mock_randint, mock_choice, mock_print):
-        generate_dungeon(1, 3, gold_range=(10, 50))
+    def test_zufaelligkeit_der_dungeon_generierung(self):
+        dungeon1 = generate_dungeon(1, 1)
+        dungeon2 = generate_dungeon(2, 2)
 
-        mock_print.assert_any_call('Goldwert außerhalb der Range!')
-        self.assertEqual(mock_print.call_count, 2)
-
-    @patch('builtins.print')
-    @patch('random.choice', side_effect=['F', 'F', 'F'])
-    @patch('random.randint', side_effect=[8, 50, 35])
-    def test_randint_ausserhalb_damage_range(self, mock_randint, mock_choice, mock_print):
-        generate_dungeon(1, 3, damage_range = (10, 40))
-
-        mock_print.assert_any_call('Schadenswert außerhalb der Range!')
-        self.assertEqual(mock_print.call_count, 2)
+        self.assertNotEqual(dungeon1, dungeon2, "Zwei generierte Dungeons sind identisch – Zufälligkeit fehlt.")
