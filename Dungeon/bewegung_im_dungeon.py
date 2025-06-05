@@ -1,9 +1,5 @@
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
     eingabe = eingabe.strip().lower()
-
-    if eingabe == 'q':
-        return 'Ende'
-
     x, y = spieler['position']
 
     # Position außerhalb des Dungeons

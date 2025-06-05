@@ -23,6 +23,7 @@ class TestZugVerarbeiten(unittest.TestCase):
 
         self.spieler['position'] = (0, 0)
         zug_verarbeiten(dungeon, self.spieler)
+        mock_print.assert_called_with('In diesem Raum warst du bereits.')
 
         self.assertEqual(self.spieler['gold'], 10)
         self.assertEqual(self.spieler['leben'], 100)

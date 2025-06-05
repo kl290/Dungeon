@@ -25,6 +25,10 @@ def main_dungeon():
         print('Leben:', spieler['leben'], 'Gold:', spieler['gold'])
 
         eingabe = input('Wohin möchtest du gehen? (Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): ')
+        eingabe = eingabe.strip().lower()
+        if eingabe == 'q':
+            print('Du hast den Dungeon verlassen.')
+            break
 
         ergebnis = bewegung_im_dungeon(dungeon, spieler, eingabe)
 
