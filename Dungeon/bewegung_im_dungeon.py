@@ -1,5 +1,4 @@
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
-    eingabe = eingabe.strip().lower()
     x, y = spieler['position']
 
     # Position außerhalb des Dungeons
@@ -9,19 +8,19 @@ def bewegung_im_dungeon(dungeon, spieler, eingabe):
 
     # Position im Dungeon prüfen
     match eingabe:
-        case 'n':
+        case 'n'| 'N':
             if y <= 0:
                 return 'Fehler'
             spieler['position'] = [x, y - 1]
-        case 's':
+        case 's'| 'S':
             if y >= len(dungeon) - 1:
                 return 'Fehler'
             spieler['position'] = [x, y + 1]
-        case 'o':
+        case 'o'|'O':
             if x >= len(dungeon[y]) - 1:
                 return 'Fehler'
             spieler['position'] = [x + 1, y]
-        case 'w':
+        case 'w'|'W':
             if x < 1:
                 return 'Fehler'
             spieler['position'] = [x - 1, y]

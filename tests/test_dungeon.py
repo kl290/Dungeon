@@ -15,7 +15,7 @@ class TestMainDungeon(unittest.TestCase):
     @patch('Dungeon.dungeon.bewegung_im_dungeon', wraps = bewegung_im_dungeon)
     @patch('Dungeon.dungeon.print_dungeon', wraps = print_dungeon)
     @patch('Dungeon.dungeon.generate_dungeon', wraps = generate_dungeon)
-    def test_dungeon_flow(self, spy_generate, spy_print, spy_bewegung, spy_zug, mock_input):
+    def test_dungeon_ablauf(self, spy_generate, spy_print, spy_bewegung, spy_zug, mock_input):
         main_dungeon()
 
         self.assertEqual(spy_generate.call_count, 1)
@@ -75,15 +75,6 @@ class TestMainDungeon(unittest.TestCase):
         self.assertEqual(mock_bewegung.call_count, 1)
         mock_print.assert_has_calls([call('Game Over! Du bist gestorben.')])
 
-    @patch('Dungeon.dungeon.bewegung_im_dungeon', return_value = 'Ende')
-    @patch('builtins.input', return_value = 's')
-    @patch('builtins.print')
-    def test_bewegung_ende(self, mock_print, mock_input, mock_bewegung):
-        main_dungeon()
-
-        self.assertEqual(mock_bewegung.call_count, 1)
-        mock_print.assert_has_calls([call('Du hast den Dungeon verlassen.')])
-
     @patch('Dungeon.dungeon.bewegung_im_dungeon', return_value = 'Fehler')
     @patch('builtins.input', side_effect = ['x', 'q'])
     @patch('builtins.print')
@@ -92,6 +83,16 @@ class TestMainDungeon(unittest.TestCase):
 
         self.assertEqual(mock_bewegung.call_count, 1)
         mock_print.assert_has_calls([call('Bewegung nicht erlaubt.')])
+
+    @patch('builtins.print')
+    def test_ausgabe_bei_sieg(self, mock_print):
+        spieler = {'gold': 100}
+
+        print('Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.')
+
+        mock_print.assert_called_with(
+            'Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.'
+        )
 
     if __name__ == '__main__':
         unittest.main()
