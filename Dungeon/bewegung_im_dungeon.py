@@ -8,19 +8,19 @@ def bewegung_im_dungeon(dungeon, spieler, eingabe):
 
     # Position im Dungeon prüfen
     match eingabe:
-        case 'n'| 'N':
+        case 'n' | 'N':
             if y <= 0:
                 return 'Fehler'
             spieler['position'] = [x, y - 1]
-        case 's'| 'S':
+        case 's' | 'S':
             if y >= len(dungeon) - 1:
                 return 'Fehler'
             spieler['position'] = [x, y + 1]
-        case 'o'|'O':
+        case 'o' | 'O':
             if x >= len(dungeon[y]) - 1:
                 return 'Fehler'
             spieler['position'] = [x + 1, y]
-        case 'w'|'W':
+        case 'w' | 'W':
             if x < 1:
                 return 'Fehler'
             spieler['position'] = [x - 1, y]

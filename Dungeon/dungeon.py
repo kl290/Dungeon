@@ -5,11 +5,7 @@ from Dungeon.zug_verarbeiten import zug_verarbeiten
 
 
 def main_dungeon():
-    spieler = {
-        'leben': 100,
-        'gold': 0,
-        'position': [-1, -1]
-    }
+    spieler = generate_player()
 
     # Begrüßung
     print('Willkommen im Dungeon-Abenteuer!')
@@ -50,6 +46,14 @@ def main_dungeon():
             print('Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.')
             break
 
+
+def generate_player():
+    spieler = {
+        'leben': 100,
+        'gold': 0,
+        'position': [-1, -1]
+    }
+    return spieler
 
 if __name__ == '__main__':
     main_dungeon()

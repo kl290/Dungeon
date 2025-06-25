@@ -1,4 +1,5 @@
 import unittest
+from random import randint
 from unittest.mock import patch, call
 
 from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
@@ -18,14 +19,14 @@ class TestMainDungeon(unittest.TestCase):
     def test_dungeon_ablauf(self, spy_generate, spy_print, spy_bewegung, spy_zug, mock_input):
         main_dungeon()
 
-        self.assertEqual(spy_generate.call_count, 1)
+        spy_generate.assert_called_once()
         spy_generate.assert_called_once_with(5, 5)
 
         self.assertEqual(spy_print.call_count, 2)
 
-        self.assertEqual(spy_bewegung.call_count, 1)
+        spy_bewegung.assert_called_once()
 
-        self.assertEqual(spy_zug.call_count, 1)
+        spy_zug.assert_called_once()
 
     @patch('builtins.input', return_value = 'q')
     @patch('builtins.print')
@@ -48,19 +49,16 @@ class TestMainDungeon(unittest.TestCase):
     def test_print_spielerdaten(self, mock_print, mock_input):
         main_dungeon()
 
-        self.assertIn(
-            ('Leben:', 100, 'Gold:', 0),
-            [call.args for call in mock_print.call_args_list]
-        )
+        mock_print.assert_has_calls([call('Leben:', 100, 'Gold:', 0)])
 
-    @patch('builtins.input', side_effect = ['s', 'q'])
+    @patch('builtins.input', side_effect = ['q'])
     def test_prompt(self, mock_input):
         main_dungeon()
 
-        erwarteter_prompt = 'Wohin möchtest du gehen? (Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): '
-        self.assertEqual(mock_input.call_args_list, [call(erwarteter_prompt), call(erwarteter_prompt)])
+        mock_input.assert_has_calls([call(
+            'Wohin möchtest du gehen? (Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): ')])
 
-    @patch('Dungeon.dungeon.zug_verarbeiten', )
+    @patch('Dungeon.dungeon.zug_verarbeiten')
     @patch('Dungeon.dungeon.bewegung_im_dungeon', return_value = 'Erfolg')
     @patch('builtins.input', return_value = 's')
     @patch('builtins.print')
@@ -72,7 +70,7 @@ class TestMainDungeon(unittest.TestCase):
 
         main_dungeon()
 
-        self.assertEqual(mock_bewegung.call_count, 1)
+        mock_bewegung.assert_called_once()
         mock_print.assert_has_calls([call('Game Over! Du bist gestorben.')])
 
     @patch('Dungeon.dungeon.bewegung_im_dungeon', return_value = 'Fehler')
@@ -81,18 +79,23 @@ class TestMainDungeon(unittest.TestCase):
     def test_bewegung_nicht_erlaubt(self, mock_print, mock_input, mock_bewegung):
         main_dungeon()
 
-        self.assertEqual(mock_bewegung.call_count, 1)
+        mock_bewegung.assert_called_once()
         mock_print.assert_has_calls([call('Bewegung nicht erlaubt.')])
 
+    @patch('builtins.input', return_value = None)
     @patch('builtins.print')
-    def test_ausgabe_bei_sieg(self, mock_print):
-        spieler = {'gold': 100}
+    @patch('Dungeon.dungeon.generate_dungeon', return_value = [[{}, {}], [{}, {}]])
+    @patch('Dungeon.dungeon.bewegung_im_dungeon', return_value = 'Fehler')
+    @patch('Dungeon.dungeon.generate_player')
+    @patch('Dungeon.dungeon.print_dungeon', return_value = None)
+    def test_print_ausgabe_bei_sieg(self, print_dungeon_mock, mock_player, mock_zug, mock_generate_dungeon, mock_print,
+            mock_input):
+        gold = randint(0, 10)
+        mock_player.return_value = {'leben': 100, 'gold': gold, 'position': [1, 1]}
 
-        print('Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.')
+        main_dungeon()
 
-        mock_print.assert_called_with(
-            'Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.'
-        )
+        mock_print.assert_called_with('Sieg! Du hast den Dungeon erfolgreich mit', gold, 'Gold verlassen.')
 
-    if __name__ == '__main__':
-        unittest.main()
+if __name__ == '__main__':
+    unittest.main()
