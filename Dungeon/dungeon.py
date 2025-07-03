@@ -2,30 +2,104 @@ from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
 from Dungeon.generate_dungeon import generate_dungeon
 from Dungeon.print_dungeon import print_dungeon
 from Dungeon.zug_verarbeiten import zug_verarbeiten
+from load_game import load_game
+from save_game import save_game
+from show_game import show_game
+
+
+def ist_spiel_aktiv(game_data):
+    spieler = game_data.get("spieler")
+    dungeon = game_data.get("dungeon")
+    if not spieler or not dungeon:
+        return False
+
+    if spieler.get("position") == [-1, -1]:
+        return False
+
+    return True
+
+
+# screenOutput(screenId, {"dungeon": dungeon, "spieler": spieler})
+
+def screen_output(screen_id, game_data):
+    match screen_id:
+        case 'main_menu':
+            return main_menu(game_data)
+        case 'loadMenu':
+            return load_game(game_data)
+        case 'save_menu':
+            return save_game(game_data)
+        case 'game':
+            return show_game(game_data)
+
+    return None
+
+
+def main_menu(game_data):
+    print()
+    print("________Hauptmenü________")
+    print("1 - Neues Spiel starten")
+    print("2 - Spielstand laden")
+    print("3 - Spiel speichern")
+    print("4 - Spiel beenden")
+    print("X - Zurück zum Spiel")
+
+    while True:
+        print()
+        wahl = input("Nummer: ")
+
+        match wahl:
+            case "1":
+                return 'dungeon'
+            case "2":
+                return "loadMenu"
+            case "3":
+                if ist_spiel_aktiv(game_data):
+                    return "save_menu"
+                else:
+                    print("Kein aktives Spiel zum Speichern.")
+            case "4":
+                return "exit"
+            case 'x' | 'X':
+                if ist_spiel_aktiv(game_data):
+                    return "dungeon"
+                else:
+                    print("Kein Spiel aktiv. Du kannst nicht zurückkehren.")
+            case _:
+                print("Ungültige Eingabe.")
 
 
 def main_dungeon():
     spieler = generate_player()
 
-    # Begrüßung
-    print('Willkommen im Dungeon-Abenteuer!')
-    print('Du befindest dich vor dem Eingang eines Dungeons.')
-
     # Initialisierung
     dungeon = generate_dungeon(5, 5)
+    game_data = {"dungeon": dungeon, "spieler": spieler}
+
+    screen_id = 'main_menu'
+
+    print('Bereit für das ultimative Dungeon-Erlebnis? Dein Abenteuer startet hier!')
 
     while True:
+
+        screen_id = screen_output(screen_id, game_data)
+
+        ## verschieben
         print()
         print('Dungeon Karte:')
         print_dungeon(dungeon, spieler['position'])
         print('Leben:', spieler['leben'], 'Gold:', spieler['gold'])
 
-        eingabe = input('Wohin möchtest du gehen? (Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): ')
+        eingabe = input(
+            'Wohin möchtest du gehen? (M = Menü, Osten = O, Westen = W, Süden = S, Norden = N, Q zum Beenden): ')
         if eingabe == 'q' or eingabe == 'Q':
             print('Du hast den Dungeon verlassen.')
             break
+        if eingabe == 'm' or eingabe == 'M':
+            screen_id = 'main_menu'
 
         ergebnis = bewegung_im_dungeon(dungeon, spieler, eingabe)
+        eingabe = eingabe.lower()
 
         match ergebnis:
             case 'Ende':
@@ -54,6 +128,7 @@ def generate_player():
         'position': [-1, -1]
     }
     return spieler
+
 
 if __name__ == '__main__':
     main_dungeon()
