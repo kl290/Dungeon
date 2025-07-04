@@ -24,6 +24,8 @@ def bewegung_im_dungeon(dungeon, spieler, eingabe):
             if x < 1:
                 return 'Fehler'
             spieler['position'] = [x - 1, y]
+        case 'm' | 'M':
+            return None
         case _:
             return 'Fehler'
 

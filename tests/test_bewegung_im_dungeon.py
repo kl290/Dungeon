@@ -70,3 +70,8 @@ class TestBewegungImDungeon(unittest.TestCase):
             self.assertEqual('Fehler', result, f"Fehler bei ungültiger Eingabe: '{eingabe}'")
             self.assertEqual([0, 0], spieler['position'],
                              f"Position darf sich bei ungültiger Eingabe nicht ändern: '{eingabe}'")
+
+    def test_menueingabe(self):
+        for eingabe in ['m', 'M']:
+            result = bewegung_im_dungeon(self.dungeon, {'position': [1, 1]}, eingabe)
+            self.assertIsNone(result)
