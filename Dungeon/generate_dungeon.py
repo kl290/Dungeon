@@ -20,7 +20,7 @@ def generate_dungeon(y, x, gold_range = (10, 50), damage_range = (10, 40)):
             elif raumtyp == 'F':
                 dungeon[i][j] = {
                     'raumtyp': raumtyp,
-                    'schaden':random.randint(damage_range[0], damage_range[1]),
+                    'schaden': random.randint(damage_range[0], damage_range[1]),
                     'besucht': False
                 }
             else:
@@ -28,4 +28,15 @@ def generate_dungeon(y, x, gold_range = (10, 50), damage_range = (10, 40)):
                     'raumtyp': raumtyp,
                     'besucht': False
                 }
+
+    startraum_init(dungeon)
+
     return dungeon
+
+
+def startraum_init(dungeon):
+    dungeon[0][0] = {
+        'raumtyp': 'L',
+        'besucht': True
+    }
+
