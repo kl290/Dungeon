@@ -15,7 +15,7 @@ class TestPrintDungeon(unittest.TestCase):
         tests = [
             [
                 [
-                    [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
                      {'raumtyp': 'F', 'besucht': True}],
                     [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True},
                      {'raumtyp': 'S', 'besucht': True}],
@@ -33,7 +33,7 @@ class TestPrintDungeon(unittest.TestCase):
             ],
             [
                 [
-                    [{'raumtyp': 'F', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
                     [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
                     [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True}],
                 ],
@@ -63,7 +63,7 @@ class TestPrintDungeon(unittest.TestCase):
         tests = [
             [
                 [
-                    [{'raumtyp': '', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
                     [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
                     [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': True}],
                 ],
@@ -79,13 +79,13 @@ class TestPrintDungeon(unittest.TestCase):
             ],
             [
                 [
-                    [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
+                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
                     [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'L', 'besucht': True}],
                     [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False}],
                 ],
                 [1, 1],
                 [
-                    call('E', end = '  '), call('S', end = '  '),
+                    call('L', end = '  '), call('S', end = '  '),
                     call(),
                     call('?', end = '  '), call('P', end = '  '),
                     call(),
@@ -96,7 +96,7 @@ class TestPrintDungeon(unittest.TestCase):
             # Test mit größerem Dungeon (4x4), um x/y-Verwechslung zu erkennen
             [
                 [
-                    [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
+                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
                      {'raumtyp': 'S', 'besucht': False},
                      {'raumtyp': 'F', 'besucht': False}],
                     [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False},
@@ -111,7 +111,7 @@ class TestPrintDungeon(unittest.TestCase):
                 ],
                 [2, 3],  # P erscheint bei [3][2], also bei y=3, x=2
                 [
-                    call('E', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
+                    call('L', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
                     call(),
                     call('S', end = '  '), call('?', end = '  '), call('S', end = '  '), call('?', end = '  '),
                     call(),

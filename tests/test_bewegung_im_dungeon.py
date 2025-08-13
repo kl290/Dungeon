@@ -75,3 +75,8 @@ class TestBewegungImDungeon(unittest.TestCase):
         for eingabe in ['m', 'M']:
             result = bewegung_im_dungeon(self.dungeon, {'position': [1, 1]}, eingabe)
             self.assertIsNone(result)
+
+    def test_menueingabe(self):
+        for eingabe in ['m', 'M']:
+            result = bewegung_im_dungeon(self.dungeon, {'position': [1, 1]}, eingabe)
+            self.assertIsNone(result)
