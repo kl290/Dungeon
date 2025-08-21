@@ -3,7 +3,7 @@ from random import randint
 from unittest.mock import patch, call
 
 from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
-from Dungeon.dungeon import main_dungeon
+from Dungeon.dungeon import main_dungeon, generate_player
 from Dungeon.generate_dungeon import generate_dungeon
 from Dungeon.print_dungeon import print_dungeon
 from Dungeon.zug_verarbeiten import zug_verarbeiten
@@ -46,10 +46,15 @@ class TestMainDungeon(unittest.TestCase):
 
     @patch('builtins.input', return_value = 'q')
     @patch('builtins.print')
-    def test_print_spielerdaten(self, mock_print, mock_input):
+    @patch('Dungeon.dungeon.generate_player', return_value = {
+        'leben': 12345,
+        'gold': 54321,
+        'position': [0, 0]
+    })
+    def test_print_spielerdaten(self, mock_generate, mock_print, mock_input):
         main_dungeon()
 
-        mock_print.assert_has_calls([call('Leben:', 100, 'Gold:', 0)])
+        mock_print.assert_has_calls([call('Leben:', 12345, 'Gold:', 54321)])
 
     @patch('builtins.input', side_effect = ['q'])
     def test_prompt(self, mock_input):
@@ -96,6 +101,11 @@ class TestMainDungeon(unittest.TestCase):
         main_dungeon()
 
         mock_print.assert_called_with('Sieg! Du hast den Dungeon erfolgreich mit', gold, 'Gold verlassen.')
+
+    def test_start_position(self):
+        spieler = generate_player()
+        self.assertEqual(spieler["position"], [0, 0])
+
 
 if __name__ == '__main__':
     unittest.main()

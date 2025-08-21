@@ -7,11 +7,9 @@ from Dungeon.zug_verarbeiten import zug_verarbeiten
 def main_dungeon():
     spieler = generate_player()
 
-    # Begrüßung
     print('Willkommen im Dungeon-Abenteuer!')
     print('Du befindest dich vor dem Eingang eines Dungeons.')
 
-    # Initialisierung
     dungeon = generate_dungeon(5, 5)
 
     while True:
@@ -51,9 +49,10 @@ def generate_player():
     spieler = {
         'leben': 100,
         'gold': 0,
-        'position': [-1, -1]
+        'position': [0, 0]
     }
     return spieler
+
 
 if __name__ == '__main__':
     main_dungeon()

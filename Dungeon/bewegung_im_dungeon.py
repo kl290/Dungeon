@@ -1,12 +1,10 @@
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
     x, y = spieler['position']
 
-    # Position außerhalb des Dungeons
     if y not in dungeon or x not in dungeon[y]:
         spieler['position'] = [0, 0]
         return 'Erfolg'
 
-    # Position im Dungeon prüfen
     match eingabe:
         case 'n' | 'N':
             if y <= 0:

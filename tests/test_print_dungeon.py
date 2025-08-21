@@ -85,7 +85,7 @@ class TestPrintDungeon(unittest.TestCase):
                 ],
                 [1, 1],
                 [
-                    call('E', end = '  '), call('S', end = '  '),
+                    call('F', end = '  '), call('S', end = '  '),
                     call(),
                     call('?', end = '  '), call('P', end = '  '),
                     call(),
@@ -97,8 +97,7 @@ class TestPrintDungeon(unittest.TestCase):
             [
                 [
                     [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
-                     {'raumtyp': 'S', 'besucht': False},
-                     {'raumtyp': 'F', 'besucht': False}],
+                     {'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'F', 'besucht': False}],
                     [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False},
                      {'raumtyp': 'S', 'besucht': True},
                      {'raumtyp': 'F', 'besucht': False}],
@@ -111,7 +110,7 @@ class TestPrintDungeon(unittest.TestCase):
                 ],
                 [2, 3],  # P erscheint bei [3][2], also bei y=3, x=2
                 [
-                    call('E', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
+                    call('?', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
                     call(),
                     call('S', end = '  '), call('?', end = '  '), call('S', end = '  '), call('?', end = '  '),
                     call(),
@@ -126,6 +125,6 @@ class TestPrintDungeon(unittest.TestCase):
         for test in tests:
             print_dungeon(test[0], test[1])
 
-            self.assertEqual(mock_print.mock_calls, test[2])
+            self.assertEqual(test[2], mock_print.mock_calls)
 
             mock_print.reset_mock()

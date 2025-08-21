@@ -1,10 +1,8 @@
 import random
 
-# Dungeon-Generierung
 Raumtypen = ['F', 'S', 'L']
 
 
-# Funktion zum Erzeugen des Dungeons
 def generate_dungeon(y, x, gold_range = (10, 50), damage_range = (10, 40)):
     dungeon = {}
     for i in range(y):
@@ -39,4 +37,3 @@ def startraum_init(dungeon):
         'raumtyp': 'L',
         'besucht': True
     }
-
