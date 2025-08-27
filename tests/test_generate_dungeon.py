@@ -11,14 +11,14 @@ from Dungeon.generate_dungeon import generate_dungeon, startraum_init
 
 class TestGenerateDungeon(unittest.TestCase):
 
-    @patch('random.randint', side_effect = [42, 17])
-    @patch('random.choice', side_effect = ['S', 'F', 'L'])
+    @patch('random.randint', side_effect = [42])
+    @patch('random.choice', side_effect = ['L', 'F', 'L'])
     @patch('Dungeon.generate_dungeon.startraum_init', return_value = None)
     def test_dungeon_generierung_mit_mock(self, mock_startraum_init, mock_choice, mock_randint):
         dungeon = generate_dungeon(1, 3, gold_range = (30, 50), damage_range = (10, 40))
 
-        testfaelle1 = {0: {0: {'besucht': False, 'gold': 42, 'raumtyp': 'S'},
-                           1: {'besucht': False, 'raumtyp': 'F', 'schaden': 17},
+        testfaelle1 = {0: {0: {'besucht': False, 'raumtyp': 'L'},
+                           1: {'besucht': False, 'raumtyp': 'F', 'schaden': 42},
                            2: {'besucht': False, 'raumtyp': 'L'}}}
 
         self.assertEqual(testfaelle1, dungeon)
@@ -86,7 +86,7 @@ class TestGenerateDungeon(unittest.TestCase):
 
         dungeon3 = {
             0: {
-                0: {},
+                0: {'raumtyp': 'S', 'besucht': False},
                 1: {'key01': 'value'}
             },
             1: {

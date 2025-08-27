@@ -19,23 +19,21 @@ class TestMenuExit(unittest.TestCase):
     @patch('builtins.input', return_value = 'n')
     def test_antwort_n_spiel_nicht_aktiv(self, mock_input, mock_ist_aktiv):
         result = menu_exit(self.game_data)
-        self.assertEqual(result, 'menu_main')
+        self.assertEqual(result, 'end')
 
-    @patch('builtins.input', return_value='j')
+    @patch('Dungeon.views.menu_exit.ist_spiel_aktiv', return_value = True)
+    @patch('builtins.input', return_value = 'j')
     @patch('builtins.print')
-    def test_antwort_j_beendet_spiel(self, mock_print, mock_input):
-        game_data = {}
+    def test_antwort_j_beendet_spiel(self, mock_print, mock_input, mock_ist_aktiv):
+        result = menu_exit(self.game_data)
+        self.assertEqual(result, 'end')
 
-        with self.assertRaises(SystemExit):
-            menu_exit(game_data)
+        mock_print.assert_called_with('Spiel wurde beendet.')
 
-        mock_print.assert_called_with("Spiel wurde beendet.")
-
-
-
+    @patch('Dungeon.views.menu_exit.ist_spiel_aktiv', return_value = True)
     @patch('builtins.input', return_value = 'x')
     @patch('builtins.print')
-    def test_ungueltige_eingabe(self, mock_print, mock_input):
+    def test_ungueltige_eingabe(self, mock_print, mock_input, mock_ist_aktiv):
         result = menu_exit(self.game_data)
         self.assertEqual(result, 'menu_main')
         mock_print.assert_called_with("Ungültige Eingabe – bitte 'j' für Ja oder 'n' für Nein eingeben.")

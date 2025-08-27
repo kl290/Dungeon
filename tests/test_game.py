@@ -17,16 +17,16 @@ class TestGenerateDungeon(unittest.TestCase):
         dungeon = game_data.get('dungeon')
         spieler = game_data.get('spieler')
 
-        self.assertEqual(dungeon, [[0]], "Dungeon wurde nicht korrekt aus game_data geladen")
-        self.assertEqual(spieler['leben'], 100, "Spielerleben stimmt nicht")
-        self.assertEqual(spieler['gold'], 50, "Spielergold stimmt nicht")
-        self.assertEqual(spieler['position'], [0, 0], "Spielerposition stimmt nicht")
+        self.assertEqual(dungeon, [[0]], 'Dungeon wurde nicht korrekt aus game_data geladen')
+        self.assertEqual(spieler['leben'], 100, 'Spielerleben stimmt nicht')
+        self.assertEqual(spieler['gold'], 50, 'Spielergold stimmt nicht')
+        self.assertEqual(spieler['position'], [0, 0], 'Spielerposition stimmt nicht')
 
     def test_start_position_und_werte(self):
         spieler = generate_player()
-        self.assertEqual(spieler["position"], [0, 0], "Spielerstartposition ist falsch")
-        self.assertEqual(spieler["leben"], 100, "Spielerleben beim Start ist falsch")
-        self.assertEqual(spieler["gold"], 0, "Spielergold beim Start ist falsch")
+        self.assertEqual(spieler['position'], [0, 0], 'Spielerstartposition ist falsch')
+        self.assertEqual(spieler['leben'], 100, 'Spielerleben beim Start ist falsch')
+        self.assertEqual(spieler['gold'], 0, 'Spielergold beim Start ist falsch')
 
     @patch('builtins.input', side_effect = [''])
     @patch('builtins.print')
@@ -62,5 +62,5 @@ class TestGenerateDungeon(unittest.TestCase):
         mock_print.assert_has_calls([call('Game Over! Du bist gestorben.')])
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

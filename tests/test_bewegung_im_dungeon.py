@@ -58,7 +58,7 @@ class TestBewegungImDungeon(unittest.TestCase):
         for position in testfaelle:
             spieler = {'position': [position[0], position[1]]}
             result = bewegung_im_dungeon(self.dungeon, spieler, 'N')
-            self.assertEqual('Erfolg', result, f"Fehler bei Startposition außerhalb: {position}")
+            self.assertEqual('Fehler', result, f"Fehler bei Startposition außerhalb: {position}")
             self.assertEqual([0, 0], spieler['position'], f"Position nicht zurückgesetzt bei: {position}")
 
     def test_ungueltige_eingabe(self):

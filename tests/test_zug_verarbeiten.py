@@ -17,7 +17,7 @@ class TestZugVerarbeiten(unittest.TestCase):
     @patch('builtins.print')
     def test_besuchter_raum(self, mock_print):
         dungeon = [
-            [{'raumtyp': 'S', 'gold': 10, 'besucht': True}, {'raumtyp': 'S', 'gold': 30, 'besucht': False}],
+            [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'S', 'gold': 30, 'besucht': False}],
             [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'schaden': 10, 'besucht': False}]
         ]
 
@@ -33,7 +33,7 @@ class TestZugVerarbeiten(unittest.TestCase):
         gold = random.randint(10, 50)
         schaden = random.randint(10, 50)
         dungeon = [
-            [{'raumtyp': 'F', 'schaden': schaden, 'besucht': False}, {'raumtyp': 'S', 'gold': gold, 'besucht': False}],
+            [{'raumtyp': 'L', 'schaden': schaden, 'besucht': False}, {'raumtyp': 'S', 'gold': gold, 'besucht': False}],
             [{'raumtyp': 'S', 'gold': gold, 'besucht': False}, {'raumtyp': 'S', 'gold': gold, 'besucht': False}]
         ]
         zug_verarbeiten(dungeon, self.spieler)
@@ -46,7 +46,7 @@ class TestZugVerarbeiten(unittest.TestCase):
         gold = random.randint(10, 50)
         schaden = random.randint(10, 50)
         dungeon = [
-            [{'raumtyp': 'F', 'schaden': schaden, 'besucht': False},
+            [{'raumtyp': 'L', 'schaden': schaden, 'besucht': False},
              {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}],
             [{'raumtyp': 'S', 'gold': gold, 'besucht': False}, {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}]
         ]
@@ -60,7 +60,7 @@ class TestZugVerarbeiten(unittest.TestCase):
         gold = random.randint(10, 50)
         schaden = random.randint(10, 50)
         dungeon = [
-            [{'raumtyp': 'F', 'schaden': schaden, 'besucht': False}, {'raumtyp': 'L', 'besucht': False}],
+            [{'raumtyp': 'L', 'schaden': schaden, 'besucht': False}, {'raumtyp': 'L', 'besucht': False}],
             [{'raumtyp': 'S', 'gold': gold, 'besucht': False}, {'raumtyp': 'F', 'schaden': schaden, 'besucht': False}]
         ]
         zug_verarbeiten(dungeon, self.spieler)

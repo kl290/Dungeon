@@ -1,25 +1,25 @@
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
     x, y = spieler['position']
 
-    if y not in dungeon or x not in dungeon[y]:
+    if y < 0 or y >= len(dungeon) or x < 0 or x >= len(dungeon[y]):
         spieler['position'] = [0, 0]
-        return 'Erfolg'
+        return 'Fehler'
 
-    match eingabe:
-        case 'n' | 'N':
+    match eingabe.strip().lower():
+        case 'n':
             if y <= 0:
                 return 'Fehler'
             spieler['position'] = [x, y - 1]
-        case 's' | 'S':
+        case 's':
             if y >= len(dungeon) - 1:
                 return 'Fehler'
             spieler['position'] = [x, y + 1]
-        case 'o' | 'O':
+        case 'o':
             if x >= len(dungeon[y]) - 1:
                 return 'Fehler'
             spieler['position'] = [x + 1, y]
-        case 'w' | 'W':
-            if x < 1:
+        case 'w':
+            if x <= 0:
                 return 'Fehler'
             spieler['position'] = [x - 1, y]
         case _:
