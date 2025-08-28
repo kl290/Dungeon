@@ -1,65 +1,106 @@
 import unittest
-from random import randint
-from unittest.mock import patch, call
+from unittest.mock import patch
 
-from Dungeon.main import main
+from Dungeon.generate_dungeon import generate_dungeon
+from Dungeon.print_dungeon import print_dungeon
 from Dungeon.views.game import game
 from Dungeon.views.game import generate_player
+from Dungeon.zug_verarbeiten import zug_verarbeiten
 
 
-class TestGenerateDungeon(unittest.TestCase):
-    def test_lade_dungeon_und_spieler(self):
-        game_data = {
-            'dungeon': [[0]],
-            'spieler': {'leben': 100, 'gold': 50, 'position': [0, 0]}
-        }
+class TestGame(unittest.TestCase):
 
-        dungeon = game_data.get('dungeon')
-        spieler = game_data.get('spieler')
-
-        self.assertEqual(dungeon, [[0]], 'Dungeon wurde nicht korrekt aus game_data geladen')
-        self.assertEqual(spieler['leben'], 100, 'Spielerleben stimmt nicht')
-        self.assertEqual(spieler['gold'], 50, 'Spielergold stimmt nicht')
-        self.assertEqual(spieler['position'], [0, 0], 'Spielerposition stimmt nicht')
-
-    def test_start_position_und_werte(self):
-        spieler = generate_player()
-        self.assertEqual(spieler['position'], [0, 0], 'Spielerstartposition ist falsch')
-        self.assertEqual(spieler['leben'], 100, 'Spielerleben beim Start ist falsch')
-        self.assertEqual(spieler['gold'], 0, 'Spielergold beim Start ist falsch')
-
-    @patch('builtins.input', side_effect = [''])
     @patch('builtins.print')
+    def test_dungeon_fehlt(self, mock_print):
+        game_data = {'spieler': 1}
+        result = game(game_data)
+
+        self.assertEqual(result, 'menu_main')
+        mock_print.assert_any_call('Es muss ein Dungeon übergeben werden!')
+
+    @patch('builtins.print')
+    def test_spieler_fehlt(self, mock_print):
+        game_data = {'dungeon': 1}
+        result = game(game_data)
+
+        self.assertEqual(result, 'menu_main')
+        mock_print.assert_any_call('Es muss ein Spieler übergeben werden!')
+
+    @patch('builtins.input', side_effect = ['1', 'm', '4', 'j'])
+    @patch('Dungeon.views.game.zug_verarbeiten', wraps = zug_verarbeiten)
     @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Erfolg')
-    @patch('Dungeon.views.game.zug_verarbeiten', return_value = None)
-    @patch('Dungeon.views.game.print_dungeon', return_value = None)
-    def test_sieg_ausgabe(self, mock_print_dungeon, mock_zug, mock_bewegung, mock_print, mock_input):
-        dungeon = [[{}, {}], [{}, {}]]
-        gold = randint(0, 10)
-        spieler = {'leben': 100, 'gold': gold, 'position': [1, 1]}
+    @patch('Dungeon.views.game.print_dungeon', wraps = print_dungeon)
+    @patch('Dungeon.views.menu_new.generate_dungeon', wraps = generate_dungeon)
+    def test_dungeon_ablauf(self, spy_generate, spy_print, spy_bewegung, spy_zug, mock_input):
+        dungeon = spy_generate(5, 5)
+        spieler = generate_player()
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
+
+        game(game_data)
+
+        spy_generate.assert_called_once_with(5, 5)
+        self.assertEqual(spy_print.call_count, 1)
+        self.assertEqual(spy_bewegung.call_count, 1)
+        self.assertEqual(spy_zug.call_count, 1)
+
+    @patch('builtins.input', return_value = 'o')
+    @patch('builtins.print')
+    @patch('Dungeon.views.game.zug_verarbeiten')
+    @patch('Dungeon.views.game.print_dungeon')
+    @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Erfolg')
+    def test_game_over(self, mock_bewegung, mock_print_dungeon, mock_zug, mock_print, mock_input):
+        dungeon = generate_dungeon(3, 3)
+        spieler = {'leben': 0, 'gold': 0, 'position': [0, 0]}
+
         game_data = {'dungeon': dungeon, 'spieler': spieler}
 
         result = game(game_data)
 
         self.assertEqual(result, 'end')
 
+        mock_print.assert_any_call('Dungeon Karte:')
+        mock_print.assert_any_call('Leben:', 0, 'Gold:', 0)
+        mock_print.assert_any_call('Game Over! Du bist gestorben.')
+
+    @patch('builtins.input', return_value = 'o')
+    @patch('builtins.print')
+    @patch('Dungeon.views.game.zug_verarbeiten')
+    @patch('Dungeon.views.game.print_dungeon')
+    @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Erfolg')
+    def test_game_sieg(self, mock_bewegung, mock_print_dungeon, mock_zug, mock_print, mock_input):
+        dungeon = generate_dungeon(3, 3)
+        spieler = {'leben': 100, 'gold': 50, 'position': [len(dungeon[0]) - 1, len(dungeon) - 1]}
+
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
+
+        result = game(game_data)
+
+        self.assertEqual(result, 'end')
+
+        mock_print.assert_any_call('Dungeon Karte:')
+        mock_print.assert_any_call('Leben:', spieler['leben'], 'Gold:', spieler['gold'])
         mock_print.assert_any_call(
-            'Sieg! Du hast den Dungeon erfolgreich mit', gold, 'Gold verlassen.'
+            'Sieg! Du hast den Dungeon erfolgreich mit', spieler['gold'], 'Gold verlassen.'
         )
 
-    @patch('Dungeon.views.game.zug_verarbeiten')
-    @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Erfolg')
-    @patch('builtins.input', side_effect = ['1', 's'])
-    @patch('builtins.print')
-    def test_game_over(self, mock_print, mock_input, mock_bewegung, mock_zug):
-        def spieler_stirbt(_, spieler):
-            spieler['leben'] = 0
+    def test_lade_dungeon_und_spieler(self):
+        dungeon = [[0]]
+        spieler = {'leben': 100, 'gold': 50, 'position': [0, 0]}
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
 
-        mock_zug.side_effect = spieler_stirbt
-        main()
+        geladener_dungeon = game_data.get('dungeon')
+        geladener_spieler = game_data.get('spieler')
 
-        mock_bewegung.assert_called_once()
-        mock_print.assert_has_calls([call('Game Over! Du bist gestorben.')])
+        self.assertEqual(geladener_dungeon, [[0]], 'Dungeon wurde nicht korrekt aus game_data geladen')
+        self.assertEqual(geladener_spieler['leben'], 100, 'Spielerleben stimmt nicht')
+        self.assertEqual(geladener_spieler['gold'], 50, 'Spielergold stimmt nicht')
+        self.assertEqual(geladener_spieler['position'], [0, 0], 'Spielerposition stimmt nicht')
+
+    def test_start_position_und_werte(self):
+        spieler = generate_player()
+        self.assertEqual(spieler['position'], [0, 0], 'Spielerstartposition ist falsch')
+        self.assertEqual(spieler['leben'], 100, 'Spielerleben beim Start ist falsch')
+        self.assertEqual(spieler['gold'], 0, 'Spielergold beim Start ist falsch')
 
 
 if __name__ == '__main__':

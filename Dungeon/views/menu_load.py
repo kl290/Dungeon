@@ -4,12 +4,12 @@ def menu_load(game_data):
         print()
         print("X - Zurück zum Menü")
 
-        eingabe = input('Welchen Spielstand möchtest du laden? (Zahl eingeben): ')
+        eingabe = input("Welchen Spielstand möchtest du laden? (Zahl eingeben): ")
         print()
 
-        match eingabe.strip().lower():
-            case 'x':
+        match eingabe:
+            case 'x' | 'X':
                 return 'menu_main'
             case _:
-                print('Ungültige Eingabe! Gib entweder eine Zahl für das Laden eines Spielstandes ein '
-                      'oder ein X um ins Hauptmenü zurückzukehren')
+                print("Ungültige Eingabe! Gib entweder eine Zahl für das Laden eines Spielstandes ein "
+                      "oder ein X um ins Hauptmenü zurückzukehren")

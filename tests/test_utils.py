@@ -1,6 +1,7 @@
 import unittest
 
 from Dungeon.utils import ist_spiel_aktiv
+from Dungeon.views.menu_new import initialisierung
 
 
 class TestIstSpielAktiv(unittest.TestCase):
@@ -19,6 +20,20 @@ class TestIstSpielAktiv(unittest.TestCase):
 
         game_data2 = {'spieler': {'position': [0, 0]}}
         self.assertFalse(ist_spiel_aktiv(game_data2))
+
+    def test_initialisierung_inhalt(self):
+        def setUp(self):
+            self.game_data = {}
+
+            result = initialisierung(self.game_data)
+
+            self.assertEqual(result, 'dungeon')
+
+            self.assertIn('spieler', self.game_data)
+            self.assertIsNotNone(self.game_data['spieler'])
+
+            self.assertIn('dungeon', self.game_data)
+            self.assertIsNotNone(self.game_data['dungeon'])
 
 
 if __name__ == '__main__':

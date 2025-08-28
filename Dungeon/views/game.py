@@ -4,6 +4,13 @@ from Dungeon.zug_verarbeiten import zug_verarbeiten
 
 
 def game(game_data):
+    if 'spieler' not in game_data:
+        print("Es muss ein Spieler übergeben werden!")
+        return 'menu_main'
+    if 'dungeon' not in game_data:
+        print("Es muss ein Dungeon übergeben werden!")
+        return 'menu_main'
+
     dungeon = game_data.get('dungeon')
     spieler = game_data.get('spieler')
 
