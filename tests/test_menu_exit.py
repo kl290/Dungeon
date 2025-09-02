@@ -13,7 +13,7 @@ class TestMenuExit(unittest.TestCase):
     @patch('builtins.input', return_value = 'n')
     def test_antwort_n_spiel_aktiv(self, mock_input, mock_ist_aktiv):
         result = menu_exit(self.game_data)
-        self.assertEqual(result, 'dungeon')
+        self.assertEqual(result, 'menu_main')
 
     @patch('Dungeon.views.menu_exit.ist_spiel_aktiv', return_value = False)
     @patch('builtins.input', return_value = 'n')

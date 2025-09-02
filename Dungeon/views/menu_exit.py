@@ -7,10 +7,7 @@ def menu_exit(game_data):
             sicher = input('Möchtest du das Spiel wirklich beenden? (j/n): ').strip().lower()
             match sicher:
                 case 'n':
-                    if ist_spiel_aktiv(game_data):
-                        return 'dungeon'
-                    else:
-                        return 'menu_main'
+                    return 'menu_main'
                 case 'j':
                     print('Spiel wurde beendet.')
                     return 'end'

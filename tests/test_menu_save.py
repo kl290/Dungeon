@@ -13,7 +13,7 @@ class TestMenuSave(unittest.TestCase):
         result = menu_save(game_data = {})
         self.assertEqual(result, 'menu_main')
         mock_print.assert_has_calls([
-            call('=== Spielstand speichern ==='),
+            call('________Spielstände________'),
             call('Kein Name eingegeben – zurück ins Hauptmenü.')
         ])
 
