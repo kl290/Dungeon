@@ -15,8 +15,9 @@ def menu_main(game_data):
         print('4 - Spiel beenden')
         print('X - Zurück zum Spiel')
         print()
-        wahl = input('Nummer: ')
-        match wahl.strip().lower():
+        wahl = (input('Nummer: ')
+                .strip().lower())
+        match wahl:
             case '1':
                 return menu_new(game_data)
             case '2':

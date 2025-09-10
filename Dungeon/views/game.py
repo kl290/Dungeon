@@ -1,3 +1,4 @@
+from Dungeon import STANDARD_SPIELER, validiereSpielerObjekt
 from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
 from Dungeon.print_dungeon import print_dungeon
 from Dungeon.zug_verarbeiten import zug_verarbeiten
@@ -14,6 +15,8 @@ def game(game_data):
     dungeon = game_data.get('dungeon')
     spieler = game_data.get('spieler')
 
+    validiereSpielerObjekt(spieler)
+
     print()
     print('Dungeon Karte:')
     print_dungeon(dungeon, spieler['position'])
@@ -21,7 +24,7 @@ def game(game_data):
 
     eingabe = input(
         'Wohin möchtest du gehen? (M = Menü, Osten = O, Westen = W, Süden = S, Norden = N): '
-    )
+    ).strip().lower()
 
     if eingabe.lower() == 'm':
         return 'menu_main'
@@ -49,9 +52,8 @@ def game(game_data):
 
 
 def generate_player():
-    spieler = {
-        'leben': 100,
-        'gold': 0,
-        'position': [0, 0]
+    return {
+        'leben': STANDARD_SPIELER['leben'],
+        'gold': STANDARD_SPIELER['gold'],
+        'position': STANDARD_SPIELER['position']
     }
-    return spieler

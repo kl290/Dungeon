@@ -8,11 +8,10 @@ def menu_save(game_data):
         return "menu_main"
 
     print('________Spielstände________')
-    name = input('Wie soll der Spielstand heißen? (nur Enter = zurück ins Menü): ').strip()
+    dateiname = input('Wie soll der Spielstand heißen? (nur Enter = zurück ins Menü): ')
 
-    if not name:
+    if not dateiname:
         print('Kein Name eingegeben – zurück ins Hauptmenü.')
         return 'menu_main'
 
-    save(game_data, name)
-    return 'menu_main'
+    return save(game_data, dateiname)

@@ -1,4 +1,8 @@
+from Dungeon import validiereSpielerObjekt
+
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
+    validiereSpielerObjekt(spieler)
+
     x, y = spieler['position']
 
     if y < 0 or y >= len(dungeon) or x < 0 or x >= len(dungeon[y]):

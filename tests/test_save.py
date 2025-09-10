@@ -1,24 +1,19 @@
+import os
 import unittest
 from unittest.mock import patch
 
-from Dungeon.save import save, ORDNER_SPIELSTAENDE
-
-
-class TestSpeicherModul(unittest.TestCase):
-    pass
-
-
 from Dungeon.save import dateiname_aufteilen, neue_namensteile_bestimmen
+from Dungeon.save import save, ORDNER_SPIELSTAENDE
 
 
 class TestDateiname(unittest.TestCase):
 
     def test_dateiname_aufteilen(self):
         testfaelle = [
-            ("Spiel.pkl", "Spiel", None),
-            ("Spiel (3).pkl", "Spiel", "3"),
-            ("Mein_Spiel (12).pkl", "Mein_Spiel", "12"),
-            ("Test-Spiel.pkl", "Test-Spiel", None),
+            ("Spiel.kl", "Spiel", None),
+            ("Spiel (3).kl", "Spiel", "3"),
+            ("Mein_Spiel (12).kl", "Mein_Spiel", "12"),
+            ("Test-Spiel.kl", "Test-Spiel", None),
         ]
 
         for dateiname, erwarteter_name, erwartete_nummer in testfaelle:
@@ -28,10 +23,10 @@ class TestDateiname(unittest.TestCase):
 
     def test_namensteile_bestimmen(self):
         testfaelle = [
-            ("Spiel.pkl", "Spiel", 1),
-            ("Spiel (5).pkl", "Spiel", 6),
-            ("Mein_Spiel (12).pkl", "Mein_Spiel", 13),
-            ("Test-Spiel.pkl", "Test-Spiel", 1),
+            ("Spiel.kl", "Spiel", 1),
+            ("Spiel (5).kl", "Spiel", 6),
+            ("Mein_Spiel (12).kl", "Mein_Spiel", 13),
+            ("Test-Spiel.kl", "Test-Spiel", 1),
         ]
 
         for dateiname, erwarteter_name, erwartete_nummer in testfaelle:
@@ -41,11 +36,20 @@ class TestDateiname(unittest.TestCase):
 
     @patch("builtins.open")
     @patch("os.makedirs")
-    def test_datei_erstellen(self, mock_ordner, mock_datei):
+    def test_datei_erstellen_v1(self, mock_ordner, mock_datei):
         game_data = {}
         result = save(game_data, "Test")
         mock_ordner.assert_called_once_with(ORDNER_SPIELSTAENDE, exist_ok = True)
-        mock_datei.assert_called_once_with(f"{ORDNER_SPIELSTAENDE}\\Test.pkl", "xb")
+        mock_datei.assert_called_once_with(os.path.join(ORDNER_SPIELSTAENDE, "Test.kl"), "xb")
+        self.assertEqual(result, "menu_main")
+
+    @patch("builtins.open")
+    @patch("os.makedirs")
+    def test_datei_erstellen_v2(self, mock_ordner, mock_datei):
+        game_data = {}
+        result = save(game_data, "Test.lc")
+        mock_ordner.assert_called_once_with(ORDNER_SPIELSTAENDE, exist_ok = True)
+        mock_datei.assert_called_once_with(os.path.join(ORDNER_SPIELSTAENDE, "Test.lc.kl"), "xb")
         self.assertEqual(result, "menu_main")
 
     @patch("builtins.open")
@@ -53,7 +57,7 @@ class TestDateiname(unittest.TestCase):
     def test_pkl(self, mock_ordner_erstellen, mock_datei_oeffnen):
         game_data = {}
         result = save(game_data, "Test")
-        mock_datei_oeffnen.assert_called_once_with(f"{ORDNER_SPIELSTAENDE}\\Test.pkl", "xb")
+        mock_datei_oeffnen.assert_called_once_with(os.path.join(ORDNER_SPIELSTAENDE, "Test.kl"), "xb")
         self.assertEqual(result, "menu_main")
 
 

@@ -12,7 +12,7 @@ class TestGame(unittest.TestCase):
 
     @patch('builtins.print')
     def test_dungeon_fehlt(self, mock_print):
-        game_data = {'spieler': 1}
+        game_data = {'spieler'}
         result = game(game_data)
 
         self.assertEqual(result, 'menu_main')
@@ -20,7 +20,7 @@ class TestGame(unittest.TestCase):
 
     @patch('builtins.print')
     def test_spieler_fehlt(self, mock_print):
-        game_data = {'dungeon': 1}
+        game_data = {'dungeon'}
         result = game(game_data)
 
         self.assertEqual(result, 'menu_main')
@@ -101,6 +101,27 @@ class TestGame(unittest.TestCase):
         self.assertEqual(spieler['position'], [0, 0], 'Spielerstartposition ist falsch')
         self.assertEqual(spieler['leben'], 100, 'Spielerleben beim Start ist falsch')
         self.assertEqual(spieler['gold'], 0, 'Spielergold beim Start ist falsch')
+
+    @patch('builtins.print')
+    def test_spieler_fehlt_element(self, mock_print):
+        dungeon = []
+        spieler = {'leben': 100, 'gold': 0}
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
+
+        with self.assertRaises(ValueError):
+            game(game_data)
+
+    @patch('builtins.print')
+    @patch('builtins.input', return_value = 'm')
+    def test_spieler_hat_alle_elemente(self, mock_input, mock_print):
+        dungeon = []
+        spieler = {'leben': 1, 'gold': 0, 'position': [0, 0]}
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
+
+        result = game(game_data)
+
+        mock_print.assert_any_call('Dungeon Karte:')
+        mock_print.assert_any_call('Leben:', 1, 'Gold:', 0)
 
 
 if __name__ == '__main__':

@@ -6,7 +6,8 @@ from Dungeon.views.game import generate_player
 def menu_new(game_data):
     if ist_spiel_aktiv(game_data):
         while True:
-            sicher = input('Bist du sicher, dass du ein neues Spiel starten möchtest? (j/n): ').strip().lower()
+            sicher = input('Bist du sicher, dass du ein neues Spiel starten möchtest? (j/n): '
+                           ).strip().lower()
 
             match sicher:
                 case 'n':

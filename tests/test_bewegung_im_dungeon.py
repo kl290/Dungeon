@@ -29,7 +29,9 @@ class TestBewegungImDungeon(unittest.TestCase):
             [(3, 1), 'W', (2, 1)],
         ]
         for start, eingabe, ziel in testfaelle:
-            spieler = {"position": [start[0], start[1]]}
+            spieler = {"position": [start[0], start[1]],
+                       "leben": 100,
+                       "gold": 0}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
             self.assertEqual('Erfolg', result, f"Fehler bei Testfall: Start={start}, Eingabe='{eingabe}'")
             self.assertEqual([ziel[0], ziel[1]], spieler['position'],
@@ -43,7 +45,9 @@ class TestBewegungImDungeon(unittest.TestCase):
             [(0, 0), 'W', (0, 0)],
         ]
         for start, eingabe, ziel in testfaelle:
-            spieler = {'position': [start[0], start[1]]}
+            spieler = {'position': [start[0], start[1]],
+                       "leben": 100,
+                       "gold": 0}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
             self.assertEqual('Fehler', result, f"Fehler erwartet bei Start={start}, Eingabe='{eingabe}'")
             self.assertEqual([ziel[0], ziel[1]], spieler['position'],
@@ -56,7 +60,9 @@ class TestBewegungImDungeon(unittest.TestCase):
             [-1, -1],
         ]
         for position in testfaelle:
-            spieler = {'position': [position[0], position[1]]}
+            spieler = {'position': [position[0], position[1]],
+                       "leben": 100,
+                       "gold": 0}
             result = bewegung_im_dungeon(self.dungeon, spieler, 'N')
             self.assertEqual('Fehler', result, f"Fehler bei Startposition außerhalb: {position}")
             self.assertEqual([0, 0], spieler['position'], f"Position nicht zurückgesetzt bei: {position}")
@@ -65,7 +71,9 @@ class TestBewegungImDungeon(unittest.TestCase):
         testfaelle = ['Z', ' z ', 'X', '!', ' 1 ', '']
 
         for eingabe in testfaelle:
-            spieler = {'position': [0, 0]}
+            spieler = {'position': [0, 0],
+                       "leben": 100,
+                       "gold": 0}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
             self.assertEqual('Fehler', result, f"Fehler bei ungültiger Eingabe: '{eingabe}'")
             self.assertEqual([0, 0], spieler['position'],

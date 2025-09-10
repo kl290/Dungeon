@@ -1,7 +1,6 @@
 from Dungeon.views.game import game
 from Dungeon.views.menu_main import menu_main
 
-
 def main():
     print('Bereit für das ultimative Dungeon-Erlebnis? Dein Abenteuer startet hier!')
 

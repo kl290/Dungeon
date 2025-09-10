@@ -6,8 +6,8 @@ ORDNER_SPIELSTAENDE = "Spielstände"
 
 
 def save(game_data, dateiname):
-    if not dateiname.endswith(".pkl"):
-        dateiname += ".pkl"
+    if not dateiname.endswith(".kl"):
+        dateiname += ".kl"
 
     os.makedirs(ORDNER_SPIELSTAENDE, exist_ok = True)
     dateipfad = os.path.join(ORDNER_SPIELSTAENDE, dateiname)
@@ -21,7 +21,7 @@ def save(game_data, dateiname):
     except FileExistsError:
         eingabe_name, versionsnummer = neue_namensteile_bestimmen(dateiname)
 
-        neuer_name = f"{eingabe_name} ({versionsnummer}).pkl"
+        neuer_name = f"{eingabe_name} ({versionsnummer}).kl"
 
         return save(game_data, neuer_name)
 
@@ -36,6 +36,6 @@ def neue_namensteile_bestimmen(dateiname):
 
 
 def dateiname_aufteilen(dateiname):
-    regex = re.compile(r'(.+?)( \((-?[0-9]+)\))?\.pkl')
+    regex = re.compile(r'(.+?)( \((-?[0-9]+)\))?\.kl')
     dateiname_match = regex.fullmatch(dateiname)
     return dateiname_match

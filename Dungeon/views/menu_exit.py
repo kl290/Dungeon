@@ -4,7 +4,8 @@ from Dungeon.utils import ist_spiel_aktiv
 def menu_exit(game_data):
     while True:
         if ist_spiel_aktiv(game_data):
-            sicher = input('Möchtest du das Spiel wirklich beenden? (j/n): ').strip().lower()
+            sicher = input('Möchtest du das Spiel wirklich beenden? (j/n): '
+                           ).strip().lower()
             match sicher:
                 case 'n':
                     return 'menu_main'
