@@ -4,6 +4,8 @@ STANDARD_SPIELER = {
     'position': [0, 0]
 }
 
+Raumtypen = ['F', 'S', 'L']
+
 
 def validiereSpielerObjekt(spieler):
     if not istValiderSpieler(spieler):
@@ -14,4 +16,10 @@ def istValiderSpieler(spieler):
     return STANDARD_SPIELER.keys() == spieler.keys()
 
 
-
+def validiere_dungeon(dungeon):
+    for zeile in dungeon.values():
+        for raum in zeile.values():
+            if raum['raumtyp'] not in Raumtypen:
+                raise ValueError("Dungeon enthält ungültige Räume!")
+            if raum.get('besucht') not in [True, False]:
+                raise ValueError("Raum 'besucht' muss True oder False sein!")

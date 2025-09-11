@@ -1,3 +1,4 @@
+from Dungeon import validiere_dungeon
 from Dungeon.generate_dungeon import generate_dungeon
 from Dungeon.utils import ist_spiel_aktiv
 from Dungeon.views.game import generate_player
@@ -23,6 +24,9 @@ def menu_new(game_data):
 def initialisierung(game_data):
     spieler = generate_player()
     dungeon = generate_dungeon(5, 5)
+
+    validiere_dungeon(dungeon)
+
     game_data['spieler'] = spieler
     game_data['dungeon'] = dungeon
 

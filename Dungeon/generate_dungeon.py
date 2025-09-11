@@ -1,10 +1,11 @@
 import random
 
-Raumtypen = ['F', 'S', 'L']
+from Dungeon import Raumtypen
 
 
 def generate_dungeon(y, x, gold_range = (10, 50), damage_range = (10, 40)):
     dungeon = {}
+
     for i in range(y):
         dungeon[i] = {}
         for j in range(x):

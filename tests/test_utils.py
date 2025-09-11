@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from Dungeon.utils import ist_spiel_aktiv
 from Dungeon.views.menu_new import initialisierung
@@ -9,7 +10,8 @@ class TestIstSpielAktiv(unittest.TestCase):
     def setUp(self):
         self.game_data = {}
 
-    def test_initialisierung_inhalt(self):
+    @patch('Dungeon.views.menu_new.validiere_dungeon', return_value = None)
+    def test_initialisierung_inhalt(self, mock_validiere_dungeon):
         result = initialisierung(self.game_data)
 
         self.assertEqual(result, 'dungeon')
@@ -18,6 +20,7 @@ class TestIstSpielAktiv(unittest.TestCase):
         self.assertIn('dungeon', self.game_data)
         self.assertIsNotNone(self.game_data['dungeon'])
 
+        mock_validiere_dungeon.assert_called_once()
 
     def test_ist_spiel_aktiv(self):
         game_data = {'spieler': 1, 'dungeon': [[]]}
