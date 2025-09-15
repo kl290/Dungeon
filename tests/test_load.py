@@ -21,14 +21,14 @@ class TestLoad(unittest.TestCase):
 
     @patch("builtins.open")
     @patch("os.path.exists")
-    def test_invalider_index(self, mock_open, mock_exists):
+    def test_invalider_index(self, mock_open1, mock_exists):
         game_data = {}
         files = ["test.kl"]
         result = load(files, 2, game_data)
 
         self.assertEqual(result, 'menu_main')
 
-        mock_open.assert_not_called()
+        mock_open1.assert_not_called()
         mock_exists.assert_not_called()
 
     @patch("builtins.print")
@@ -41,6 +41,44 @@ class TestLoad(unittest.TestCase):
         mock_print.assert_any_call("Die Datei 'save.txt' kann nicht geöffnet werden: falsche Endung!")
 
         self.assertEqual(result, 'menu_main')
+
+    @patch("builtins.print")
+    @patch("os.path.exists", return_value = False)
+    def test_dateipfad_existiert_nicht(self, mock_print, mock_exists):
+        dateien = ["savegame.kl"]
+        eingabe = "1"
+        game_data = {}
+
+        result = load(dateien, eingabe, game_data)
+
+        self.assertEqual(result, "menu_main")
+        mock_exists.assert_called()
+
+    @patch("builtins.print")
+    def test_load_value_error(self, mock_print):
+        dateien = ["savegame.kl"]
+        eingabe = "abc"
+        game_data = {}
+
+        result = load(dateien, eingabe, game_data)
+
+        self.assertEqual(result, "menu_main")
+
+        mock_print.assert_called_with("Ungültige Eingabe! Bitte eine Zahl eingeben.")
+
+    @patch("builtins.print")
+    @patch("os.path.exists", return_value = True)
+    @patch("builtins.open", side_effect = Exception("Dateifehler"))
+    def test_load_exception(self, mock_op, mock_exists, mock_print):
+        dateien = ["savegame.kl"]
+        eingabe = "1"
+        game_data = {}
+
+        result = load(dateien, eingabe, game_data)
+
+        self.assertEqual(result, "menu_main")
+
+        mock_print.assert_called_with("Fehler beim Laden des Spielstands: Dateifehler")
 
 
 if __name__ == "__main__":

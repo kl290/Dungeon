@@ -7,13 +7,13 @@ STANDARD_SPIELER = {
 Raumtypen = ['F', 'S', 'L']
 
 
-def validiereSpielerObjekt(spieler):
-    if not istValiderSpieler(spieler):
+def validiere_spieler_objekt(spieler):
+    if not ist_valider_spieler(spieler):
         raise ValueError("Es müssen alle Elemente des Spielers übergeben werden!")
 
 
-def istValiderSpieler(spieler):
-    return STANDARD_SPIELER.keys() == spieler.keys()
+def ist_valider_spieler(spieler):
+    return isinstance(spieler, dict) and STANDARD_SPIELER.keys() == spieler.keys()
 
 
 def validiere_dungeon(dungeon):

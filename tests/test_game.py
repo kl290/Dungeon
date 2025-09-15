@@ -114,7 +114,7 @@ class TestGame(unittest.TestCase):
     @patch('builtins.print')
     @patch('builtins.input', return_value = 'm')
     def test_spieler_hat_alle_elemente(self, mock_input, mock_print):
-        dungeon = []
+        dungeon = {}
         spieler = {'leben': 1, 'gold': 0, 'position': [0, 0]}
         game_data = {'dungeon': dungeon, 'spieler': spieler}
 
@@ -122,6 +122,16 @@ class TestGame(unittest.TestCase):
 
         mock_print.assert_any_call('Dungeon Karte:')
         mock_print.assert_any_call('Leben:', 1, 'Gold:', 0)
+
+    @patch('builtins.print')
+    @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Ende')
+    @patch('builtins.input', return_value = 'o')
+    def test_dungeon_verlassen(self, mock_input, mock_bewegung, mock_print):
+        spieler = {'leben': 100, 'gold': 10, 'position': [0, 0]}
+        game_data = {'dungeon': {}, 'spieler': spieler}
+
+        self.assertEqual(game(game_data), 'end')
+        mock_print.assert_any_call('Du hast den Dungeon verlassen.')
 
 
 if __name__ == '__main__':

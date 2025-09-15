@@ -1,7 +1,7 @@
-from Dungeon import validiereSpielerObjekt
+from Dungeon import validiere_spieler_objekt
 
 def bewegung_im_dungeon(dungeon, spieler, eingabe):
-    validiereSpielerObjekt(spieler)
+    validiere_spieler_objekt(spieler)
 
     x, y = spieler['position']
 

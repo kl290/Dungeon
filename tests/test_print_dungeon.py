@@ -14,14 +14,14 @@ class TestPrintDungeon(unittest.TestCase):
     def test_print_dungeon_rooms(self, mock_print):
         tests = [
             [
-                [
-                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True},
-                     {'raumtyp': 'F', 'besucht': True}],
-                    [{'raumtyp': 'F', 'besucht': True}, {'raumtyp': 'S', 'besucht': True},
-                     {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'S', 'besucht': False}, {'raumtyp': 'L', 'besucht': True},
-                     {'raumtyp': 'L', 'besucht': True}],
-                ],
+                {
+                    0: {0: {'raumtyp': 'L', 'besucht': False}, 1: {'raumtyp': 'F', 'besucht': True},
+                        2: {'raumtyp': 'F', 'besucht': True}},
+                    1: {0: {'raumtyp': 'F', 'besucht': True}, 1: {'raumtyp': 'S', 'besucht': True},
+                        2: {'raumtyp': 'S', 'besucht': True}},
+                    2: {0: {'raumtyp': 'S', 'besucht': False}, 1: {'raumtyp': 'L', 'besucht': True},
+                        2: {'raumtyp': 'L', 'besucht': True}},
+                },
                 [
                     call('P', end = '  '), call('F', end = '  '), call('F', end = '  '),
                     call(),
@@ -32,11 +32,14 @@ class TestPrintDungeon(unittest.TestCase):
                 ]
             ],
             [
-                [
-                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
-                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'F', 'besucht': True}],
-                ],
+                {
+                    0: {0: {'raumtyp': 'L', 'besucht': False},
+                        1: {'raumtyp': 'S', 'besucht': True}},
+                    1: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'F', 'besucht': False}},
+                    2: {0: {'raumtyp': 'L', 'besucht': False},
+                        1: {'raumtyp': 'F', 'besucht': True}},
+                },
                 [
                     call('P', end = '  '),
                     call('S', end = '  '),
@@ -51,22 +54,23 @@ class TestPrintDungeon(unittest.TestCase):
             ]
         ]
 
-        for test in tests:
-            print_dungeon(test[0], [0, 0])
-
-            self.assertEqual(mock_print.mock_calls, test[1])
-
+        for dungeon, expected_calls in tests:
             mock_print.reset_mock()
+            print_dungeon(dungeon, [0, 0])
+            self.assertEqual(mock_print.mock_calls, expected_calls)
 
     @patch('builtins.print')
     def test_print_dungeon_spieler_position(self, mock_print):
         tests = [
-            [
-                [
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': False}],
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': True}],
-                ],
+            (
+                {
+                    0: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'S', 'besucht': True}},
+                    1: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'F', 'besucht': False}},
+                    2: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'F', 'besucht': True}},
+                },
                 [0, 0],
                 [
                     call('P', end = '  '), call('S', end = '  '),
@@ -76,13 +80,16 @@ class TestPrintDungeon(unittest.TestCase):
                     call('L', end = '  '), call('F', end = '  '),
                     call()
                 ]
-            ],
-            [
-                [
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'L', 'besucht': False}, {'raumtyp': 'L', 'besucht': True}],
-                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False}],
-                ],
+            ),
+            (
+                {
+                    0: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'S', 'besucht': True}},
+                    1: {0: {'raumtyp': 'L', 'besucht': False},
+                        1: {'raumtyp': 'L', 'besucht': True}},
+                    2: {0: {'raumtyp': 'S', 'besucht': True},
+                        1: {'raumtyp': 'L', 'besucht': False}},
+                },
                 [1, 1],
                 [
                     call('L', end = '  '), call('S', end = '  '),
@@ -92,22 +99,26 @@ class TestPrintDungeon(unittest.TestCase):
                     call('S', end = '  '), call('?', end = '  '),
                     call()
                 ]
-            ],
-            [
-                [
-                    [{'raumtyp': 'L', 'besucht': True}, {'raumtyp': 'F', 'besucht': True},
-                     {'raumtyp': 'S', 'besucht': False},
-                     {'raumtyp': 'F', 'besucht': False}],
-                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': False},
-                     {'raumtyp': 'S', 'besucht': True},
-                     {'raumtyp': 'F', 'besucht': False}],
-                    [{'raumtyp': 'F', 'besucht': False}, {'raumtyp': 'F', 'besucht': False},
-                     {'raumtyp': 'L', 'besucht': True},
-                     {'raumtyp': 'S', 'besucht': True}],
-                    [{'raumtyp': 'S', 'besucht': True}, {'raumtyp': 'L', 'besucht': True},
-                     {'raumtyp': 'F', 'besucht': False},
-                     {'raumtyp': 'S', 'besucht': False}]
-                ],
+            ),
+            (
+                {
+                    0: {0: {'raumtyp': 'L', 'besucht': True},
+                        1: {'raumtyp': 'F', 'besucht': True},
+                        2: {'raumtyp': 'S', 'besucht': False},
+                        3: {'raumtyp': 'F', 'besucht': False}},
+                    1: {0: {'raumtyp': 'S', 'besucht': True},
+                        1: {'raumtyp': 'L', 'besucht': False},
+                        2: {'raumtyp': 'S', 'besucht': True},
+                        3: {'raumtyp': 'F', 'besucht': False}},
+                    2: {0: {'raumtyp': 'F', 'besucht': False},
+                        1: {'raumtyp': 'F', 'besucht': False},
+                        2: {'raumtyp': 'L', 'besucht': True},
+                        3: {'raumtyp': 'S', 'besucht': True}},
+                    3: {0: {'raumtyp': 'S', 'besucht': True},
+                        1: {'raumtyp': 'L', 'besucht': True},
+                        2: {'raumtyp': 'F', 'besucht': False},
+                        3: {'raumtyp': 'S', 'besucht': False}},
+                },
                 [2, 3],
                 [
                     call('L', end = '  '), call('F', end = '  '), call('?', end = '  '), call('?', end = '  '),
@@ -119,12 +130,10 @@ class TestPrintDungeon(unittest.TestCase):
                     call('S', end = '  '), call('L', end = '  '), call('P', end = '  '), call('?', end = '  '),
                     call()
                 ]
-            ]
+            )
         ]
 
-        for test in tests:
-            print_dungeon(test[0], test[1])
-
-            self.assertEqual(mock_print.mock_calls, test[2])
-
+        for dungeon, position, expected_calls in tests:
             mock_print.reset_mock()
+            print_dungeon(dungeon, position)
+            self.assertEqual(mock_print.mock_calls, expected_calls)

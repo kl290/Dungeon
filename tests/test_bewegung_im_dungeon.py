@@ -5,7 +5,6 @@ from unittest.mock import patch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Dungeon import validiereSpielerObjekt
 from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
 
 
@@ -19,7 +18,7 @@ class TestBewegungImDungeon(unittest.TestCase):
             3: {0: {}, 1: {}, 2: {}, 3: {}}
         }
 
-    @patch('Dungeon.bewegung_im_dungeon.validiereSpielerObjekt', return_value = None)
+    @patch('Dungeon.bewegung_im_dungeon.validiere_spieler_objekt', return_value = None)
     def test_erfolg(self, mock_validiere_spieler_objekt):
         testfaelle = [
             [(2, 3), 'n', (2, 2)],
@@ -39,7 +38,7 @@ class TestBewegungImDungeon(unittest.TestCase):
                              f"Position nicht korrekt bei Start={start}, Eingabe='{eingabe}'")
             mock_validiere_spieler_objekt.assert_called()
 
-    @patch('Dungeon.bewegung_im_dungeon.validiereSpielerObjekt', return_value = None)
+    @patch('Dungeon.bewegung_im_dungeon.validiere_spieler_objekt', return_value = None)
     def test_fehler(self, mock_validiere_spieler_objekt):
         testfaelle = [
             [(1, 0), 'N', (1, 0)],
@@ -54,7 +53,7 @@ class TestBewegungImDungeon(unittest.TestCase):
             self.assertEqual([ziel[0], ziel[1]], spieler['position'],
                              f"Position darf sich nicht ändern bei Fehler: Start={start}, Eingabe='{eingabe}'")
 
-    @patch('Dungeon.bewegung_im_dungeon.validiereSpielerObjekt', return_value = None)
+    @patch('Dungeon.bewegung_im_dungeon.validiere_spieler_objekt', return_value = None)
     def test_position_ausserhalb_dungeon(self, mock_validiere_spieler_objekt):
         testfaelle = [
             [-1, 0],
@@ -62,31 +61,28 @@ class TestBewegungImDungeon(unittest.TestCase):
             [-1, -1],
         ]
         for position in testfaelle:
-            spieler = {'position': [position[0], position[1]],
-                       "leben": 100,
-                       "gold": 0}
+            spieler = {'position': [position[0], position[1]]}
             result = bewegung_im_dungeon(self.dungeon, spieler, 'N')
             self.assertEqual('Fehler', result, f"Fehler bei Startposition außerhalb: {position}")
             self.assertEqual([0, 0], spieler['position'], f"Position nicht zurückgesetzt bei: {position}")
 
-    @patch('Dungeon.bewegung_im_dungeon.validiereSpielerObjekt', return_value = None)
+    @patch('Dungeon.bewegung_im_dungeon.validiere_spieler_objekt', return_value = None)
     def test_ungueltige_eingabe(self, mock_validiere_spieler_objekt):
         testfaelle = ['Z', ' z ', 'X', '!', ' 1 ', '']
 
         for eingabe in testfaelle:
-            spieler = {'position': [0, 0],
-                       "leben": 100,
-                       "gold": 0}
+            spieler = {'position': [0, 0]}
             result = bewegung_im_dungeon(self.dungeon, spieler, eingabe)
             self.assertEqual('Fehler', result, f"Fehler bei ungültiger Eingabe: '{eingabe}'")
             self.assertEqual([0, 0], spieler['position'],
                              f"Position darf sich bei ungültiger Eingabe nicht ändern: '{eingabe}'")
 
-    @patch('Dungeon.istValiderSpieler', return_value = False)
-    def test_validiere_spieler_objekt(self, mock_ist_valider_spieler):
+    @patch('Dungeon.bewegung_im_dungeon.validiere_spieler_objekt', return_value = None)
+    def test_validiere_spieler_objekte(self, mock_validiere):
+        dungeon = []
         spieler = {'position': [0, 0]}
+        eingabe = 'Richtung'
 
-        with self.assertRaises(ValueError):
-            validiereSpielerObjekt(spieler)
+        bewegung_im_dungeon(dungeon, spieler, eingabe)
 
-        mock_ist_valider_spieler.assert_called_once()
+        mock_validiere.assert_called_once_with(spieler)

@@ -27,8 +27,6 @@ class TestMenuNew(unittest.TestCase):
         result = menu_new(self.game_data)
         self.assertEqual(result, 'dungeon')
 
-        mock_validiere_dungeon.assert_called_once()
-
     @patch('Dungeon.views.menu_new.ist_spiel_aktiv', return_value = True)
     @patch('builtins.print')
     @patch('builtins.input', side_effect = ['x', 'n'])
@@ -36,6 +34,12 @@ class TestMenuNew(unittest.TestCase):
         result = menu_new(self.game_data)
         self.assertEqual(result, 'dungeon')
         mock_print.assert_any_call("Ungültige Eingabe – bitte 'j' für Ja oder 'n' für Nein eingeben.")
+
+    @patch('Dungeon.views.menu_new.validiere_dungeon', return_value = None)
+    def test_aufruf_dungeon_validierung(self, mock_validiere_dungeon):
+        result = menu_new(self.game_data)
+        self.assertEqual(result, 'dungeon')
+        mock_validiere_dungeon.assert_called_once()
 
 
 if __name__ == '__main__':

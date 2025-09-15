@@ -1,11 +1,11 @@
 def print_dungeon(dungeon, spieler_position):
-    for y in range(0, len(dungeon)):
-        for x in range(0, len(dungeon[y])):
+    for y, zeile in enumerate(dungeon.values()):
+        for x, raum in enumerate(zeile.values()):
             if spieler_position == [x, y]:
                 print('P', end = '  ')
             else:
-                if dungeon[y][x]['besucht']:
-                    print(dungeon[y][x]['raumtyp'], end = '  ')
+                if raum['besucht']:
+                    print(raum['raumtyp'], end = '  ')
                 else:
                     print('?', end = '  ')
         print()

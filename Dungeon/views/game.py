@@ -1,4 +1,4 @@
-from Dungeon import STANDARD_SPIELER, validiereSpielerObjekt
+from Dungeon import STANDARD_SPIELER, validiere_spieler_objekt
 from Dungeon.bewegung_im_dungeon import bewegung_im_dungeon
 from Dungeon.print_dungeon import print_dungeon
 from Dungeon.zug_verarbeiten import zug_verarbeiten
@@ -6,16 +6,16 @@ from Dungeon.zug_verarbeiten import zug_verarbeiten
 
 def game(game_data):
     if 'spieler' not in game_data:
-        print("Es muss ein Spieler übergeben werden!")
+        print('Es muss ein Spieler übergeben werden!')
         return 'menu_main'
     if 'dungeon' not in game_data:
-        print("Es muss ein Dungeon übergeben werden!")
+        print('Es muss ein Dungeon übergeben werden!')
         return 'menu_main'
 
     dungeon = game_data.get('dungeon')
     spieler = game_data.get('spieler')
 
-    validiereSpielerObjekt(spieler)
+    validiere_spieler_objekt(spieler)
 
     print()
     print('Dungeon Karte:')
