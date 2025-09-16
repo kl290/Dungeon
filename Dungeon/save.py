@@ -9,7 +9,9 @@ def save(game_data, dateiname):
     if not dateiname.endswith(".kl"):
         dateiname += ".kl"
 
-    os.makedirs(ORDNER_SPIELSTAENDE, exist_ok = True)
+    if not os.path.exists(ORDNER_SPIELSTAENDE):
+        os.makedirs(ORDNER_SPIELSTAENDE, exist_ok = True)
+
     dateipfad = os.path.join(ORDNER_SPIELSTAENDE, dateiname)
 
     try:

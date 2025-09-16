@@ -40,7 +40,3 @@ class TestMenuLoad(unittest.TestCase):
         game_data = {}
         menu_load(game_data)
         mock_load.assert_called_once_with(['save1.kl'], '1', game_data)
-
-
-if __name__ == '__main__':
-    unittest.main()

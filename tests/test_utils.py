@@ -34,7 +34,3 @@ class TestIstSpielAktiv(unittest.TestCase):
 
         game_data = {}
         self.assertFalse(ist_spiel_aktiv(game_data))
-
-
-if __name__ == '__main__':
-    unittest.main()

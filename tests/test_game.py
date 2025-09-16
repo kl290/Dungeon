@@ -104,7 +104,7 @@ class TestGame(unittest.TestCase):
 
     @patch('builtins.print')
     def test_spieler_fehlt_element(self, mock_print):
-        dungeon = []
+        dungeon = {}
         spieler = {'leben': 100, 'gold': 0}
         game_data = {'dungeon': dungeon, 'spieler': spieler}
 
@@ -127,12 +127,20 @@ class TestGame(unittest.TestCase):
     @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Ende')
     @patch('builtins.input', return_value = 'o')
     def test_dungeon_verlassen(self, mock_input, mock_bewegung, mock_print):
-        spieler = {'leben': 100, 'gold': 10, 'position': [0, 0]}
+        spieler = {'leben': 0, 'gold': 0, 'position': 0}
         game_data = {'dungeon': {}, 'spieler': spieler}
 
         self.assertEqual(game(game_data), 'end')
         mock_print.assert_any_call('Du hast den Dungeon verlassen.')
 
+    @patch('builtins.print')
+    @patch('Dungeon.views.game.bewegung_im_dungeon', return_value = 'Fehler')
+    @patch('builtins.input', return_value = 'o')
+    @patch('Dungeon.views.game.print_dungeon')
+    def test_bewegung_nicht_erlaubt(self, mock_print_dungeon, mock_input, mock_bewegung, mock_print):
+        dungeon = [[], []]
+        spieler = {'leben': 1, 'gold': 1, 'position': 1}
+        game_data = {'dungeon': dungeon, 'spieler': spieler}
 
-if __name__ == '__main__':
-    unittest.main()
+        self.assertEqual(game(game_data), 'dungeon')
+        mock_print.assert_any_call('Bewegung nicht erlaubt.')

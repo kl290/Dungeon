@@ -37,7 +37,3 @@ class TestMenuExit(unittest.TestCase):
         result = menu_exit(self.game_data)
         self.assertEqual(result, 'menu_main')
         mock_print.assert_called_with("Ungültige Eingabe – bitte 'j' für Ja oder 'n' für Nein eingeben.")
-
-
-if __name__ == '__main__':
-    unittest.main()

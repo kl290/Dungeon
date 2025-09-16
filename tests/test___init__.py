@@ -19,7 +19,7 @@ class TestDungeon(unittest.TestCase):
     def test_mit_invalidem_spieler_objekt(self, mock_ist_valider_spieler):
         with self.assertRaises(ValueError) as contextManager:
             validiere_spieler_objekt({})
-            mock_ist_valider_spieler.assert_called()
+        mock_ist_valider_spieler.assert_called()
         self.assertEqual(contextManager.exception.args[0], "Es müssen alle Elemente des Spielers übergeben werden!")
 
     def test_valider_spieler(self):
@@ -29,9 +29,9 @@ class TestDungeon(unittest.TestCase):
     def test_invalider_spieler(self):
         fehlerhafte_spieler = [
             {},
-            {'leben': 100},
-            {'gold': 0},
-            {'position': [0, 0]},
+            {'leben': 1},
+            {'gold': 1},
+            {'position': 1},
             {'Schaden': 100, 'Start': [1]},
             {'leben': 100, 'Start': [1], 'position': [1], 'zusatz_gold': 100000},
             {'leben': 100, 'position': [1]},
@@ -62,7 +62,3 @@ class TestDungeon(unittest.TestCase):
         with self.assertRaises(ValueError) as contextManager:
             validiere_dungeon(dungeon_falsch_v2)
         self.assertEqual(contextManager.exception.args[0], "Raum 'besucht' muss True oder False sein!")
-
-
-if __name__ == "__main__":
-    unittest.main()

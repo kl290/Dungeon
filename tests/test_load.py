@@ -38,7 +38,7 @@ class TestLoad(unittest.TestCase):
         files = ["save.txt"]
         result = load(files, 1, game_data)
 
-        mock_print.assert_any_call("Die Datei 'save.txt' kann nicht geöffnet werden: falsche Endung!")
+        mock_print.assert_any_call("Fehler beim Laden des Spielstands: Die Datei 'save.txt' kann nicht geöffnet werden: falsche Endung!")
 
         self.assertEqual(result, 'menu_main')
 
@@ -64,7 +64,7 @@ class TestLoad(unittest.TestCase):
 
         self.assertEqual(result, "menu_main")
 
-        mock_print.assert_called_with("Ungültige Eingabe! Bitte eine Zahl eingeben.")
+        mock_print.assert_called_with("Fehler beim Laden des Spielstands: Ungültige Eingabe! Bitte eine Zahl eingeben.")
 
     @patch("builtins.print")
     @patch("os.path.exists", return_value = True)
@@ -79,7 +79,3 @@ class TestLoad(unittest.TestCase):
         self.assertEqual(result, "menu_main")
 
         mock_print.assert_called_with("Fehler beim Laden des Spielstands: Dateifehler")
-
-
-if __name__ == "__main__":
-    unittest.main()

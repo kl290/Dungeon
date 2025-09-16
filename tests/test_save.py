@@ -1,6 +1,6 @@
 import os
 import unittest
-from unittest.mock import patch
+from unittest.mock import patch, mock_open, call
 
 from Dungeon.save import dateiname_aufteilen, neue_namensteile_bestimmen
 from Dungeon.save import save, ORDNER_SPIELSTAENDE
@@ -60,6 +60,20 @@ class TestDateiname(unittest.TestCase):
         mock_datei_oeffnen.assert_called_once_with(os.path.join(ORDNER_SPIELSTAENDE, "Test.kl"), "xb")
         self.assertEqual(result, "menu_main")
 
+    @patch("os.path.exists", side_effect = [False, True])
+    @patch("Dungeon.save.neue_namensteile_bestimmen", return_value = ("Spiel", 1))
+    @patch("builtins.open", side_effect = [FileExistsError, mock_open().return_value])
+    @patch("os.makedirs")
+    def test_datei_existiert_ruft_save_mit_neuem_namen_auf(self, mock_makedirs, mock_op, mock_namensteile, mock_path):
+        game_data = {}
 
-if __name__ == "__main__":
-    unittest.main()
+        result = save(game_data, "Spiel.kl")
+
+        self.assertEqual(mock_op.call_count, 2)
+        mock_op.assert_has_calls([
+            call(os.path.join(ORDNER_SPIELSTAENDE, "Spiel.kl"), "xb"),
+            call(os.path.join(ORDNER_SPIELSTAENDE, "Spiel (1).kl"), "xb")
+        ])
+        self.assertEqual(result, "menu_main")
+        mock_namensteile.assert_called_once()
+        mock_makedirs.assert_called_once_with(ORDNER_SPIELSTAENDE, exist_ok = True)

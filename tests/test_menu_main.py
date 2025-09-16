@@ -40,7 +40,3 @@ class TestMenuMain(unittest.TestCase):
         game_data = {}
         result = menu_main(game_data)
         mock_zurueck.assert_called_once_with(game_data)
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -20,7 +20,3 @@ class TestMenuZurueck(unittest.TestCase):
         result = menu_zurueck(game_data)
         self.assertEqual(result, 'menu_main')
         mock_print.assert_called_once_with('Kein Spiel aktiv. Du kannst nicht zurückkehren.')
-
-
-if __name__ == '__main__':
-    unittest.main()

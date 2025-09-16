@@ -53,7 +53,3 @@ class TestMainDungeon(unittest.TestCase):
         main()
 
         mock_print.assert_any_call('Kein Spiel aktiv. Du kannst nicht zurückkehren.')
-
-
-if __name__ == '__main__':
-    unittest.main()
